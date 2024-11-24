@@ -27,10 +27,12 @@ func _on_mqtt_received_message(topic, message):
 	else:
 		print("Rec ", topic, " ", message)
 
+var k = 0.0
 func _input(event):
 	if event is InputEventKey and event.is_pressed() and event.keycode == KEY_T:
-		var r = {"Point1":[-3.0,0.0,-1.6], "Point2":[-3.0,0.0,1.4]}
+		var r = {"Point1":[-3.0,k,-1.6], "Point2":[-3.0,k,-1.4]}
 		$MQTT.publish("paraview/streamdef", JSON.stringify(r))
+		k += 0.2
 		
 	if event is InputEventKey and event.is_pressed() and event.keycode == KEY_S:
 		$Streamline.setstreampoints(Dpoints, Dscalars)

@@ -1,6 +1,6 @@
 extends MeshInstance3D
 
-var streamlinelength = 100
+var streamlinelength = 200
 var streamlinerows = 3
 
 var streamlinetextureimage : Image
@@ -26,16 +26,15 @@ func getp3(points, i):
 	return Vector3(points[i][0], points[i][2], -points[i][1])
 
 func setstreampoints(points, scalars):
-	print(len(points), points[0])
 	var Npts = min(streamlinelength, len(points))
-	mesh.material.set_shader_parameter("streamlineYstretch", Npts/streamlinelength)
+	print(len(points), points[0], points[Npts-1])
+	mesh.material.set_shader_parameter("streamlineYstretch", Npts*0.99/streamlinelength)
 	for i in range(Npts):
 		var p = getp3(points, i)
 		var v = getp3(points, min(len(points)-1, i + dvdgap)) - getp3(points, max(0, i - dvdgap))
-		if i == 0:
-			print("v", v.normalized())
 		var nvx = v.cross(Vector3(0,1,0)).normalized()
 		var nvz = nvx.cross(v).normalized()
+		
 		streamlinedata.set(i, Vector4(p.x, p.y, p.z, scalars[i]))
 		streamlinedata.set(i + streamlinelength, Vector4(nvx.x, nvx.y, nvx.z, scalars[i]))
 		streamlinedata.set(i + 2*streamlinelength, Vector4(nvz.x, nvz.y, nvz.z, scalars[i]))
@@ -45,5 +44,6 @@ func setstreampoints(points, scalars):
 	var Dp2 = Vector3(streamlinedata[11].x, streamlinedata[11].y, streamlinedata[11].z)
 	print("  . ", (Dp2 - Dp1).normalized() , streamlinedata[10+streamlinelength], streamlinedata[10+streamlinelength*2])
 	visible = true
-	print($StartMarker.position)
-	$StartMarker.position = Vector3(points[0][0], points[0][2], -points[0][1])
+#	print($StartMarker.position)
+	$StartMarker.position = getp3(points, 0)
+	$EndMarker.position = getp3(points, Npts-1)

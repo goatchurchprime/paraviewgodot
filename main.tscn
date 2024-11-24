@@ -27,7 +27,7 @@ radius = 0.05
 radial_steps = 4
 sections = 100
 section_length = 0.02
-section_rings = 1
+section_rings = 2
 cap_top = false
 cap_bottom = false
 
@@ -39,10 +39,10 @@ environment = SubResource("Environment_hcrru")
 [node name="XROrigin3D" type="XROrigin3D" parent="."]
 
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
-transform = Transform3D(0.960162, 0, 0.279444, 0, 1, 0, -0.279444, 0, 0.960162, -0.189453, 0, 2.84159)
+transform = Transform3D(0.997726, 0.0478949, -0.047425, -0.040822, 0.989272, 0.140263, 0.0536341, -0.138008, 0.988978, -0.189453, 0, 2.84159)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.43353, 3.18947, 0.65477)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.43353, 1.10122, -1.09096)
 
 [node name="ParaviewStreamlines" type="Node3D" parent="."]
 script = ExtResource("1_p2bwx")
@@ -51,7 +51,6 @@ script = ExtResource("1_p2bwx")
 verbose_level = 1
 
 [node name="Streamline" parent="ParaviewStreamlines" instance=ExtResource("3_dn4qm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("TubeTrailMesh_wacjv")
 
 [connection signal="broker_connected" from="ParaviewStreamlines/MQTT" to="ParaviewStreamlines" method="_on_mqtt_broker_connected"]
