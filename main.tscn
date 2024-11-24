@@ -1,9 +1,17 @@
-[gd_scene load_steps=10 format=3 uid="uid://bn2xgm3m3ury6"]
+[gd_scene load_steps=24 format=3 uid="uid://bn2xgm3m3ury6"]
 
+[ext_resource type="PackedScene" uid="uid://b4kad2kuba1yn" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" id="1_2he8d"]
 [ext_resource type="Script" path="res://paraview_streamlines.gd" id="1_p2bwx"]
 [ext_resource type="PackedScene" uid="uid://ktm7k0co2o7l" path="res://addons/mqtt/mqtt.tscn" id="2_fsyfu"]
+[ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="2_mpt64"]
+[ext_resource type="PackedScene" uid="uid://l2n30mpbkdyw" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_hand_low.tscn" id="3_37mlj"]
 [ext_resource type="PackedScene" uid="uid://dendsjqephs4a" path="res://streamlinecode/streamline.tscn" id="3_dn4qm"]
 [ext_resource type="Shader" path="res://streamlinecode/streamline.gdshader" id="3_jth2b"]
+[ext_resource type="PackedScene" uid="uid://kyhaogt0a4q8" path="res://addons/godot-xr-tools/functions/movement_flight.tscn" id="3_sp5j6"]
+[ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="4_eskk3"]
+[ext_resource type="PackedScene" uid="uid://ctltchlf2j2r4" path="res://addons/xr-simulator/XRSimulator.tscn" id="5_pe4ij"]
+[ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="6_7knfo"]
+[ext_resource type="Script" path="res://addons/godot-xr-tools/overrides/ground_physics_settings.gd" id="8_o1wrc"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_g3kws"]
 
@@ -13,6 +21,18 @@ sky_material = SubResource("ProceduralSkyMaterial_g3kws")
 [sub_resource type="Environment" id="Environment_hcrru"]
 background_mode = 2
 sky = SubResource("Sky_guvv8")
+
+[sub_resource type="Resource" id="Resource_gxlgb"]
+script = ExtResource("8_o1wrc")
+flags = 0
+move_drag = 5.0
+move_traction = 30.0
+stop_on_slope = true
+move_max_slope = 45.0
+jump_max_slope = 45.0
+jump_velocity = 3.0
+bounciness = 0.0
+bounce_threshold = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nh770"]
 resource_local_to_scene = true
@@ -31,6 +51,23 @@ section_rings = 2
 cap_top = false
 cap_bottom = false
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_llug4"]
+size = Vector3(20, 1, 20)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_15lt8"]
+frequency = 0.0556
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_gitt0"]
+noise = SubResource("FastNoiseLite_15lt8")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h23ba"]
+albedo_color = Color(0.888399, 0.923278, 0.409427, 1)
+albedo_texture = SubResource("NoiseTexture2D_gitt0")
+
+[sub_resource type="BoxMesh" id="BoxMesh_724ns"]
+material = SubResource("StandardMaterial3D_h23ba")
+size = Vector3(20, 1, 20)
+
 [node name="Main" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -40,6 +77,31 @@ environment = SubResource("Environment_hcrru")
 
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
 transform = Transform3D(0.997726, 0.0478949, -0.047425, -0.040822, 0.989272, 0.140263, 0.0536341, -0.138008, 0.988978, -0.189453, 0, 2.84159)
+
+[node name="XRControllerLeft" type="XRController3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.737183, 0, 0.809174)
+tracker = &"left_hand"
+
+[node name="LeftHand" parent="XROrigin3D/XRControllerLeft" instance=ExtResource("1_2he8d")]
+
+[node name="MovementDirect" parent="XROrigin3D/XRControllerLeft" instance=ExtResource("2_mpt64")]
+strafe = true
+
+[node name="MovementFlight" parent="XROrigin3D/XRControllerLeft" instance=ExtResource("3_sp5j6")]
+
+[node name="XRControllerRight" type="XRController3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.363892, 0, 0.891296)
+tracker = &"right_hand"
+
+[node name="RightHand" parent="XROrigin3D/XRControllerRight" instance=ExtResource("3_37mlj")]
+
+[node name="StartXR" parent="XROrigin3D" instance=ExtResource("4_eskk3")]
+
+[node name="XRSimulator" parent="XROrigin3D" instance=ExtResource("5_pe4ij")]
+disable_xr_in_editor = true
+
+[node name="PlayerBody" parent="XROrigin3D" instance=ExtResource("6_7knfo")]
+physics = SubResource("Resource_gxlgb")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.43353, 1.10122, -1.09096)
@@ -52,6 +114,15 @@ verbose_level = 1
 
 [node name="Streamline" parent="ParaviewStreamlines" instance=ExtResource("3_dn4qm")]
 mesh = SubResource("TubeTrailMesh_wacjv")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.18509, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_llug4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("BoxMesh_724ns")
 
 [connection signal="broker_connected" from="ParaviewStreamlines/MQTT" to="ParaviewStreamlines" method="_on_mqtt_broker_connected"]
 [connection signal="received_message" from="ParaviewStreamlines/MQTT" to="ParaviewStreamlines" method="_on_mqtt_received_message"]
