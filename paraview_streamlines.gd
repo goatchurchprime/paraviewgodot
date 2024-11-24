@@ -1,6 +1,6 @@
 extends Node3D
 
-var brokerurl = "localhost"
+var brokerurl = "mosquitto.doesliverpool.xyz"
 
 @onready var streamlines = [ $Streamline ]
 func _ready():
@@ -34,13 +34,23 @@ func _input(event):
 		$MQTT.publish("paraview/streamdef", JSON.stringify(r))
 		k += 0.2
 		
-	if event is InputEventKey and event.is_pressed() and event.keycode == KEY_S:
+	if event is InputEventKey and event.is_pressed() and event.keycode == KEY_Y:
 		$Streamline.setstreampoints(Dpoints, Dscalars)
 		return
 		var points = [ ]
 		for i in range(100):
 			points.push_back([(i-50)*0.05, sin(i*0.2)*0.3, cos(i*0.2)*0.3])
 		
+func _on_pickable_object_action_pressed(pickable):
+	print(pickable.transform.origin)
+	print(pickable.transform.basis.y)
+	var pickablesize = pickable.get_node("MeshInstance3D").mesh.size*pickable.scale
+	var pickrad = pickablesize.y*0.5
+	var p1 = pickable.transform.origin - pickable.transform.basis.y*pickrad
+	var p2 = pickable.transform.origin + pickable.transform.basis.y*pickrad
+	var r = {"Point1":[p1.x,-p1.z,p1.y], "Point2":[p2.x,-p2.z,p2.y]}
+	$MQTT.publish("paraview/streamdef", JSON.stringify(r))
+	print(pickable)
 
 
 
