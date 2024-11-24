@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://dendsjqephs4a"]
+
+[ext_resource type="Shader" path="res://streamlinecode/streamline.gdshader" id="1_v3stf"]
+[ext_resource type="Script" path="res://streamlinecode/streamline.gd" id="2_bimhy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vwdhb"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_v3stf")
+shader_parameter/streamlineYstretch = 1.0
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_vl4wk"]
+resource_local_to_scene = true
+material = SubResource("ShaderMaterial_vwdhb")
+radius = 0.01
+radial_steps = 4
+sections = 100
+section_length = 0.02
+section_rings = 1
+cap_top = false
+cap_bottom = false
+
+[sub_resource type="BoxMesh" id="BoxMesh_2haar"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[node name="Streamline" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.11066, 0)
+mesh = SubResource("TubeTrailMesh_vl4wk")
+script = ExtResource("2_bimhy")
+
+[node name="StartMarker" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_2haar")

@@ -1,0 +1,58 @@
+[gd_scene load_steps=10 format=3 uid="uid://bn2xgm3m3ury6"]
+
+[ext_resource type="Script" path="res://paraview_streamlines.gd" id="1_p2bwx"]
+[ext_resource type="PackedScene" uid="uid://ktm7k0co2o7l" path="res://addons/mqtt/mqtt.tscn" id="2_fsyfu"]
+[ext_resource type="PackedScene" uid="uid://dendsjqephs4a" path="res://streamlinecode/streamline.tscn" id="3_dn4qm"]
+[ext_resource type="Shader" path="res://streamlinecode/streamline.gdshader" id="3_jth2b"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_g3kws"]
+
+[sub_resource type="Sky" id="Sky_guvv8"]
+sky_material = SubResource("ProceduralSkyMaterial_g3kws")
+
+[sub_resource type="Environment" id="Environment_hcrru"]
+background_mode = 2
+sky = SubResource("Sky_guvv8")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nh770"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("3_jth2b")
+shader_parameter/streamlineYstretch = 1.0
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_wacjv"]
+resource_local_to_scene = true
+material = SubResource("ShaderMaterial_nh770")
+radius = 0.05
+radial_steps = 4
+sections = 100
+section_length = 0.02
+section_rings = 1
+cap_top = false
+cap_bottom = false
+
+[node name="Main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_hcrru")
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+transform = Transform3D(0.960162, 0, 0.279444, 0, 1, 0, -0.279444, 0, 0.960162, -0.189453, 0, 2.84159)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.43353, 3.18947, 0.65477)
+
+[node name="ParaviewStreamlines" type="Node3D" parent="."]
+script = ExtResource("1_p2bwx")
+
+[node name="MQTT" parent="ParaviewStreamlines" instance=ExtResource("2_fsyfu")]
+verbose_level = 1
+
+[node name="Streamline" parent="ParaviewStreamlines" instance=ExtResource("3_dn4qm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("TubeTrailMesh_wacjv")
+
+[connection signal="broker_connected" from="ParaviewStreamlines/MQTT" to="ParaviewStreamlines" method="_on_mqtt_broker_connected"]
+[connection signal="received_message" from="ParaviewStreamlines/MQTT" to="ParaviewStreamlines" method="_on_mqtt_received_message"]
