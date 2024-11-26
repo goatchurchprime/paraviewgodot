@@ -1,5 +1,5 @@
 
-# nix-shell -p python312Packages.paho-mqtt paraview
+# nix-shell -p python312Packages.paho-mqtt paraview python312Packages.paho-mqtt
 # run this file as as pvpython to serve the streamlines through mqtt
 
 mqtthost = "mosquitto.doesliverpool.xyz"
@@ -28,14 +28,16 @@ print("q.UpdatePipeline...")
 q.UpdatePipeline()  # long wait
 print("Done q.UpdatePipeline")
 
-def transmitstreamlines(recid, a):
+def transmitstreamlines(recid, a, bnegy):
     indices = vtkIdList()
     cells = a.GetLines()
     cells.InitTraversal()
     lineno = 0
+    def fnegy(p):
+        return (p[0], -p[1] if bnegy else p[1], p[2])
     while cells.GetNextCell(indices):
         ptids = [ indices.GetId(i)  for i in range(indices.GetNumberOfIds()) ]
-        points = [ a.points.GetPoint(j)  for j in ptids ]
+        points = [ fnegy(a.points.GetPoint(j))  for j in ptids ]
         scalars = [ a.point_data.scalars.GetValue(j)  for j in ptids ]
         jout = { "recid":recid, "lineno":lineno, "points":points, "scalars":scalars }
         lineno += 1
@@ -47,10 +49,15 @@ def transmitstreamlines(recid, a):
 
 def recstreamdef(v):
     print("recstreamdef ", v)
-    if "Point1" in v:
-        q.SeedType.Point1 = v["Point1"]
-    if "Point2" in v:
-        q.SeedType.Point2 = v["Point2"]
+    pt1 = v["Point1"] if "Point1" in v else q.SeedType.Point1
+    pt2 = v["Point2"] if "Point2" in v else q.SeedType.Point2
+    bnegy = ((pt1[1] + pt2[1])/2 < 0)
+    if bnegy:
+        pt1.y = -pt1.y
+        pt2.y = -pt2.y
+    q.SeedType.Point1 = pt1
+    q.SeedType.Point2 = pt2
+
     recid = v.get("recid", 0)
     q.SeedType.Resolution = 5
     q.IntegrationDirection = "FORWARD"
@@ -59,7 +66,7 @@ def recstreamdef(v):
     q.UpdatePipeline()  # long wait
     print(" done updating pipeline")
     a = e.Fetch(q)
-    transmitstreamlines(recid, a)
+    transmitstreamlines(recid, a, bnegy)
         
 
 def on_connect(client, userdata, flags, reason_code, properties=None):
@@ -93,7 +100,6 @@ mess about and apply stream tracer
     
 get MQTT interface going to listen and relate the streamlines as binary
 -------------    
-nix-shell -p python312Packages.paho-mqtt    
 /nix/store/5s130y6qy7nkp7y640mlmcqffwzl5ww6-python3.12-paho-mqtt-1.6.1/lib/python3.12/site-packages/
 
 sys.path.append("/nix/store/5s130y6qy7nkp7y640mlmcqffwzl5ww6-python3.12-paho-mqtt-1.6.1/lib/python3.12/site-packages/")
