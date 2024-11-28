@@ -24,6 +24,7 @@ cap_bottom = false
 size = Vector3(0.1, 0.1, 0.1)
 
 [node name="Streamline" type="MeshInstance3D"]
+ignore_occlusion_culling = true
 mesh = SubResource("TubeTrailMesh_vl4wk")
 script = ExtResource("2_bimhy")
 

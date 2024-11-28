@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://bn2xgm3m3ury6"]
+[gd_scene load_steps=34 format=3 uid="uid://bn2xgm3m3ury6"]
 
 [ext_resource type="PackedScene" uid="uid://b4kad2kuba1yn" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" id="1_2he8d"]
 [ext_resource type="Script" path="res://paraview_streamlines.gd" id="1_p2bwx"]
@@ -15,6 +15,8 @@
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="6_7knfo"]
 [ext_resource type="Script" path="res://addons/godot-xr-tools/overrides/ground_physics_settings.gd" id="8_o1wrc"]
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="14_hgqvo"]
+[ext_resource type="PackedScene" uid="uid://5g8c1x4vuxdd" path="res://paraviewcode/cube.glb" id="17_282d7"]
+[ext_resource type="PackedScene" uid="uid://cxb7uex63m1vv" path="res://paraviewcode/decimatedhalfwing.glb" id="17_tle55"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_g3kws"]
 
@@ -135,6 +137,10 @@ shader_parameter/uv2_offset = Vector3(0, 0, 0)
 material = SubResource("ShaderMaterial_wtcw8")
 size = Vector3(0.04, 0.5, 0.04)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_77bh0"]
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0.254902, 1, 1)
+
 [node name="Main" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -182,6 +188,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.43353, 1.10122, -1.09096)
 light_energy = 2.0
 omni_range = 20.0
 
+[node name="OmniLight3D2" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00226104, -1.58701, 0.171522)
+visible = false
+light_energy = 2.0
+omni_range = 20.0
+
 [node name="ParaviewStreamlines" type="Node3D" parent="."]
 script = ExtResource("1_p2bwx")
 
@@ -213,8 +225,24 @@ shape = SubResource("BoxShape3D_15xqe")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PickableObject"]
 mesh = SubResource("BoxMesh_b3ccu")
 
+[node name="cube" parent="." instance=ExtResource("17_282d7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.339539, 0)
+visible = false
+
+[node name="Mesh" parent="cube" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_77bh0")
+
+[node name="StationaryModel" type="Node3D" parent="."]
+
+[node name="decimatedhalfwing" parent="StationaryModel" instance=ExtResource("17_tle55")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+
+[node name="decimatedhalfwing2" parent="StationaryModel" instance=ExtResource("17_tle55")]
+transform = Transform3D(1, 0, 0, 0, 4.37114e-08, 1, 0, 1, -4.37114e-08, 0, 0, 0)
+
 [connection signal="broker_connected" from="ParaviewStreamlines/MQTT" to="ParaviewStreamlines" method="_on_mqtt_broker_connected"]
 [connection signal="received_message" from="ParaviewStreamlines/MQTT" to="ParaviewStreamlines" method="_on_mqtt_received_message"]
 [connection signal="action_pressed" from="PickableObject" to="ParaviewStreamlines" method="_on_pickable_object_action_pressed"]
 
 [editable path="PickableObject"]
+[editable path="cube"]

@@ -20,7 +20,7 @@ func _ready():
 	print(mesh.material.get_shader_parameter("streamline"))
 	mesh.material.set_shader_parameter("streamlineYstretch", 0.5)
 	assert (streamlinetexture != null)
-	custom_aabb = AABB(Vector3(-1000,-1000,-1000), Vector3(1000,1000,1000))
+	custom_aabb = AABB(Vector3(-10000,-10000,-10000), Vector3(20000,20000,20000))
 	
 const dvdgap = 2
 func getp3(points, i):
