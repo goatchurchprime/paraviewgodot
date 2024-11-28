@@ -11,12 +11,14 @@ func _ready():
 		add_child(d)
 		streamlines.append(d)
 		d.visible = false
+	get_node("../StreamlineWand/MeshInstance3D").mesh.material.set_shader_parameter("albedo", Color.DARK_BLUE)
 
 func _process(delta):
 	pass
 
 func _on_mqtt_broker_connected():
 	$MQTT.subscribe("paraview/#")
+	get_node("../StreamlineWand/MeshInstance3D").mesh.material.set_shader_parameter("albedo", Color.YELLOW)
 	
 var Istreamline = 1
 func _on_mqtt_received_message(topic, message):
