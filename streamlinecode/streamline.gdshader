@@ -13,13 +13,13 @@ void vertex() {
 	vec4 svx = texture(streamline, vec2(tu, 0.5));
 	vec4 svz = texture(streamline, vec2(tu, 1.0));
 	scalar = s.w;
-
+	float frad = -scalar*0.135 + 1.0;
+	float phase = abs(100.0 - tu*10.0 + TIME*0.41);
+	if (fract(phase) < 0.1)
+		frad *= 0.5;
 	vec3 p = VERTEX;
-	VERTEX.x = s.x*0.5;
-	VERTEX.z = p.x + s.z;
-	VERTEX.y = p.z + s.y;
 	
-	VERTEX = s.xyz + p.x*svx.xyz + p.z*svz.xyz;
+	VERTEX = s.xyz + (p.x*svx.xyz + p.z*svz.xyz)*frad;
 }
 
 void fragment() {

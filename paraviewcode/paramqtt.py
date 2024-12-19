@@ -53,8 +53,8 @@ def recstreamdef(v):
     pt2 = v["Point2"] if "Point2" in v else q.SeedType.Point2
     bnegy = ((pt1[1] + pt2[1])/2 < 0)
     if bnegy:
-        pt1.y = -pt1.y
-        pt2.y = -pt2.y
+        pt1[1] = -pt1[1]
+        pt2[1] = -pt2[1]
     q.SeedType.Point1 = pt1
     q.SeedType.Point2 = pt2
 
