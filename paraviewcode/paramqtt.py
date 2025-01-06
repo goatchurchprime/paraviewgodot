@@ -1,25 +1,27 @@
 
-# nix-shell -p python312Packages.paho-mqtt paraview python312Packages.paho-mqtt
-# run this file as as pvpython to serve the streamlines through mqtt
+# to serve the streamlines through mqtt:
+#   nix-shell -p python312Packages.paho-mqtt paraview python312Packages.paho-mqtt
+#   pvpython paramqtt.py 
 
 mqtthost = "mosquitto.doesliverpool.xyz"
 #mqtthost = "localhost"
 topicstreamdef = "paraview/streamdef"
 topicstatus = "paraview/status"
 topicstreamdata = "paraview/streamdata"
-datadirectory = "/home/julian/data/timfreecad/CFD examples/case-smoothmesh-AL10"
-
+#datadirectory = "/home/julian/data/timfreecad/CFD examples/case-smoothmesh-AL10"
+datadirectory = "../paraviewdata/case-smoothmesh-AL10"
+statefile = "view2.pvsm"
+transmitsteamlinesfile = "../paraviewdata/laststreamlines.txt"
 
 import paho.mqtt.client as mqtt
-import json
+import json, os
 
 import paraview.simple as s
 
-s.LoadState(datadirectory+"/view.pvsm", data_directory=datadirectory)
+s.LoadState(os.path.join(datadirectory, statefile), data_directory=datadirectory)
 q = list(s.GetSources().values())[-1]
 import paraview.servermanager as e
 from vtkmodules.vtkCommonCore import vtkIdList
-
 
 
 client = mqtt.Client("thing")
@@ -27,6 +29,10 @@ client = mqtt.Client("thing")
 print("q.UpdatePipeline...")
 q.UpdatePipeline()  # long wait
 print("Done q.UpdatePipeline")
+# q.PointData.items()  [('AngularVelocity', Array: AngularVelocity), ('IntegrationTime', Array: IntegrationTime), ('k', Array: k), ('Normals', Array: Normals), ('nut', Array: nut), ('omega', Array: omega), ('p', Array: p), ('Rotation', Array: Rotation), ('U', Array: U), ('Vorticity', Array: Vorticity)]
+# a = e.Fetch(q)
+# a.point_data.SetActiveScalars("IntegrationTime")   "p" is the default
+# a.point_data.scalars.GetValue(100)
 
 def transmitstreamlines(recid, a, bnegy):
     indices = vtkIdList()
@@ -35,15 +41,29 @@ def transmitstreamlines(recid, a, bnegy):
     lineno = 0
     def fnegy(p):
         return (p[0], -p[1] if bnegy else p[1], p[2])
+    fout = open(transmitsteamlinesfile, "w") if transmitsteamlinesfile else None
     while cells.GetNextCell(indices):
         ptids = [ indices.GetId(i)  for i in range(indices.GetNumberOfIds()) ]
         points = [ fnegy(a.points.GetPoint(j))  for j in ptids ]
-        scalars = [ a.point_data.scalars.GetValue(j)  for j in ptids ]
-        jout = { "recid":recid, "lineno":lineno, "points":points, "scalars":scalars }
-        lineno += 1
+        jout = { "recid":recid, "lineno":lineno, "points":points }
+        for k in ["IntegrationTime", "p"]:
+            a.point_data.SetActiveScalars(k)
+            scalars = [ a.point_data.scalars.GetValue(j)  for j in ptids ]
+            jout[k] = scalars
+        for k in ["U"]:
+            a.point_data.SetActiveVectors(k)
+            assert a.point_data.vectors.number_of_components == 3
+            vecs = [ a.point_data.vectors.GetTuple3(j)  for j in ptids ]
+            jout[k] = vecs
+            
         print("transmitting on", topicstreamdata, "recid", recid, "lineno", lineno, "npts", len(points))
         client.publish(topicstreamdata, json.dumps(jout))
-
+        if fout:
+            fout.write(json.dumps(jout))
+            fout.write("\n")
+        lineno += 1
+    if fout:
+        fout.close()
 
 # mosquitto_pub -h '{"Point1":[-3.0,0.0,-1.6], "Point2":[3.0,1.0,-1.4]}'
 

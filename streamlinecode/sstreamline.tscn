@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=3 uid="uid://yrhaji6vsgf2"]
+
+[ext_resource type="Script" uid="uid://d2hs1qhs8y21g" path="res://streamlinecode/sstreamline.gd" id="1_mi80b"]
+[ext_resource type="Shader" uid="uid://l867x45r8pu8" path="res://sstreamline2.gdshader" id="2_2264k"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p71va"]
+render_priority = 0
+shader = ExtResource("2_2264k")
+shader_parameter/albedo = Color(1, 0, 0, 1)
+
+[sub_resource type="PointMesh" id="PointMesh_a1ggd"]
+material = SubResource("ShaderMaterial_p71va")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a3r4c"]
+render_priority = 0
+shader = ExtResource("2_2264k")
+shader_parameter/albedo = Color(0, 0, 1, 1)
+
+[node name="SStreamLine" type="Node3D"]
+script = ExtResource("1_mi80b")
+
+[node name="Stream" type="MeshInstance3D" parent="."]
+mesh = SubResource("PointMesh_a1ggd")
+surface_material_override/0 = SubResource("ShaderMaterial_a3r4c")

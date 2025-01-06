@@ -3,6 +3,9 @@ extends Node3D
 var brokerurl = "mosquitto.doesliverpool.xyz"
 
 @onready var streamlines = [ $Streamline ]
+
+@onready var SStreamlineScene = load("res://streamlinecode/sstreamline.tscn")
+
 func _ready():
 	$MQTT.connect_to_broker(brokerurl)
 	var streamlinescene = load("res://streamlinecode/streamline.tscn")
@@ -12,6 +15,21 @@ func _ready():
 		streamlines.append(d)
 		d.visible = false
 	get_node("../StreamlineWand/MeshInstance3D").mesh.material.set_shader_parameter("albedo", Color.DARK_BLUE)
+
+	
+	var points = [ ]
+	var scalars = [ ]
+	var integrationtime = [ ]
+	var U = [ ]
+	for i in range(200):
+		points.push_back(Vector3((i-50)*0.05, sin(i*0.2)*0.3, cos(i*0.2)*0.3-1.3))
+		scalars.push_back(sin(i*0.3)*2+3)
+		integrationtime.push_back((sin(i*0.3) + i*0.3)/50.0)
+		U.push_back((0.3*cos(i*0.3) + 0.3)/5.0)
+	#$SStreamLine_placeholder.makepointsstreammesh(points, scalars)
+	$SStreamLine_placeholder.maketubesstreammesh(points, integrationtime, U, 0.02)
+
+
 
 func _process(delta):
 	pass
@@ -24,7 +42,15 @@ var Istreamline = 1
 func _on_mqtt_received_message(topic, message):
 	if topic == "paraview/streamdata":
 		var x = JSON.parse_string(message)
-		streamlines[Istreamline].setstreampoints(x["points"], x["scalars"])
+		var sstreamline = SStreamlineScene.instantiate()
+		var U = [ ]
+		for u in x["U"]:
+			var ll = Vector3(u[0], u[1], u[2]).length()
+			U.push_back((ll-8)*0.015)
+		sstreamline.maketubesstreammesh(x["points"], x["IntegrationTime"], U, 0.02)
+		add_child(sstreamline)
+		#streamlines[Istreamline].setstreampoints(x["points"], x["p"])
+		#streamlines[Istreamline].setstreampoints(x["points"], x["p"])
 		Istreamline = (Istreamline + 1) % len(streamlines)
 	else:
 		print("Rec ", topic, " ", message)
