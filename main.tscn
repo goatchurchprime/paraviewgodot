@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://bn2xgm3m3ury6"]
+[gd_scene load_steps=36 format=3 uid="uid://bn2xgm3m3ury6"]
 
 [ext_resource type="PackedScene" uid="uid://b4kad2kuba1yn" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" id="1_2he8d"]
 [ext_resource type="Script" uid="uid://drb2c05go1xn3" path="res://paraview_streamlines.gd" id="1_p2bwx"]
@@ -76,7 +76,7 @@ material = SubResource("StandardMaterial3D_h23ba")
 size = Vector3(20, 1, 20)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_15xqe"]
-size = Vector3(0.04, 0.5, 0.04)
+size = Vector3(0.04, 0.3, 0.04)
 
 [sub_resource type="Shader" id="Shader_wwkiw"]
 code = "// NOTE: Shader automatically converted from Godot Engine 4.3.stable's StandardMaterial3D.
@@ -137,11 +137,14 @@ shader_parameter/uv2_offset = Vector3(0, 0, 0)
 
 [sub_resource type="BoxMesh" id="BoxMesh_b3ccu"]
 material = SubResource("ShaderMaterial_wtcw8")
-size = Vector3(0.04, 0.5, 0.04)
+size = Vector3(0.04, 0.3, 0.04)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_77bh0"]
 vertex_color_use_as_albedo = true
 albedo_color = Color(1, 0.254902, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_074og"]
+albedo_color = Color(1, 0.611765, 1, 1)
 
 [node name="Main" type="Node3D"]
 
@@ -245,8 +248,14 @@ surface_material_override/0 = SubResource("StandardMaterial3D_77bh0")
 [node name="decimatedhalfwing" parent="StationaryModel" instance=ExtResource("17_tle55")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
 
+[node name="Mesh" parent="StationaryModel/decimatedhalfwing" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_074og")
+
 [node name="decimatedhalfwing2" parent="StationaryModel" instance=ExtResource("17_tle55")]
 transform = Transform3D(1, 0, 0, 0, 4.37114e-08, 1, 0, 1, -4.37114e-08, 0, 0, 0)
+
+[node name="Mesh" parent="StationaryModel/decimatedhalfwing2" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_074og")
 
 [connection signal="broker_connected" from="ParaviewStreamlines/MQTT" to="ParaviewStreamlines" method="_on_mqtt_broker_connected"]
 [connection signal="received_message" from="ParaviewStreamlines/MQTT" to="ParaviewStreamlines" method="_on_mqtt_received_message"]
@@ -254,3 +263,5 @@ transform = Transform3D(1, 0, 0, 0, 4.37114e-08, 1, 0, 1, -4.37114e-08, 0, 0, 0)
 
 [editable path="StreamlineWand"]
 [editable path="cube"]
+[editable path="StationaryModel/decimatedhalfwing"]
+[editable path="StationaryModel/decimatedhalfwing2"]

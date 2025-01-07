@@ -25,9 +25,9 @@ func _ready():
 		points.push_back(Vector3((i-50)*0.05, sin(i*0.2)*0.3, cos(i*0.2)*0.3-1.3))
 		scalars.push_back(sin(i*0.3)*2+3)
 		integrationtime.push_back((sin(i*0.3) + i*0.3)/50.0)
-		U.push_back((0.3*cos(i*0.3) + 0.3)/5.0)
+		U.push_back((0.3*cos(i*0.3) + 0.3))
 	#$SStreamLine_placeholder.makepointsstreammesh(points, scalars)
-	$SStreamLine_placeholder.maketubesstreammesh(points, integrationtime, U, 0.02)
+	$SStreamLine_placeholder.maketubesstreammesh(points, integrationtime, U)
 
 
 
@@ -39,16 +39,18 @@ func _on_mqtt_broker_connected():
 	get_node("../StreamlineWand/MeshInstance3D").mesh.material.set_shader_parameter("albedo", Color.YELLOW)
 	
 var Istreamline = 1
+
 func _on_mqtt_received_message(topic, message):
 	if topic == "paraview/streamdata":
 		var x = JSON.parse_string(message)
 		var sstreamline = SStreamlineScene.instantiate()
 		var U = [ ]
 		for u in x["U"]:
-			var ll = Vector3(u[0], u[1], u[2]).length()
-			U.push_back((ll-8)*0.015)
-		sstreamline.maketubesstreammesh(x["points"], x["IntegrationTime"], U, 0.02)
+			var ll = 2.0/sqrt(Vector3(u[0], u[1], u[2]).length())
+			U.push_back(clamp(ll, 0.01, 1.0))
+		sstreamline.maketubesstreammesh(x["points"], x["IntegrationTime"], U)
 		add_child(sstreamline)
+		$SStreamLine_placeholder.visible = false
 		#streamlines[Istreamline].setstreampoints(x["points"], x["p"])
 		#streamlines[Istreamline].setstreampoints(x["points"], x["p"])
 		Istreamline = (Istreamline + 1) % len(streamlines)
@@ -59,8 +61,11 @@ var k = 0.0
 func _input(event):
 	if event is InputEventKey and event.is_pressed() and event.keycode == KEY_T:
 		var r = {"Point1":[-3.0,k,-1.6], "Point2":[-3.0,k,-1.4]}
-		$MQTT.publish("paraview/streamdef", JSON.stringify(r))
+		#$MQTT.publish("paraview/streamdef", JSON.stringify(r))
 		k += 0.2
+		_on_pickable_object_action_pressed(get_node("../StreamlineWand"))
+		get_node("../StreamlineWand").position.z += 0.1
+		get_node("../StreamlineWand").rotation_degrees.x += -10
 		
 	if event is InputEventKey and event.is_pressed() and event.keycode == KEY_Y:
 		$Streamline.setstreampoints(Dpoints, Dscalars)
