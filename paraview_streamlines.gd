@@ -2,20 +2,11 @@ extends Node3D
 
 var brokerurl = "mosquitto.doesliverpool.xyz"
 
-@onready var streamlines = [ $Streamline ]
-
 @onready var SStreamlineScene = load("res://streamlinecode/sstreamline.tscn")
 
 func _ready():
 	$MQTT.connect_to_broker(brokerurl)
-	var streamlinescene = load("res://streamlinecode/streamline.tscn")
-	for i in range(10):
-		var d = streamlinescene.instantiate()
-		add_child(d)
-		streamlines.append(d)
-		d.visible = false
 	get_node("../StreamlineWand/MeshInstance3D").mesh.material.set_shader_parameter("albedo", Color.DARK_BLUE)
-
 	
 	var points = [ ]
 	var scalars = [ ]
@@ -51,9 +42,6 @@ func _on_mqtt_received_message(topic, message):
 		sstreamline.maketubesstreammesh(x["points"], x["IntegrationTime"], U)
 		add_child(sstreamline)
 		$SStreamLine_placeholder.visible = false
-		#streamlines[Istreamline].setstreampoints(x["points"], x["p"])
-		#streamlines[Istreamline].setstreampoints(x["points"], x["p"])
-		Istreamline = (Istreamline + 1) % len(streamlines)
 	else:
 		print("Rec ", topic, " ", message)
 

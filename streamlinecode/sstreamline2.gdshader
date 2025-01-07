@@ -4,10 +4,10 @@ render_mode cull_back;
 uniform vec4 albedo : source_color = vec4(0.0,0.0,1.0,1.0);
 
 varying float integrationtime;
-uniform float rad = 0.02;
+uniform float rad = 0.012;
 
 void vertex() {
-	COLOR = albedo + vec4(UV.x, 0.0, 0.0, 0.0);
+	COLOR = vec4(clamp(UV.y*4.0-3.0, 0.0, 0.5), 0.0, 1.0, 0.0);
 	VERTEX += NORMAL*UV.y*rad;
 	integrationtime = UV.x;
 }

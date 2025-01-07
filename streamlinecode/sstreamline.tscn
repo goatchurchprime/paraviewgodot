@@ -17,7 +17,7 @@ material = SubResource("ShaderMaterial_p71va")
 render_priority = 0
 shader = ExtResource("3_a3r4c")
 shader_parameter/albedo = Color(0, 0, 1, 1)
-shader_parameter/rad = 0.02
+shader_parameter/rad = 0.012
 
 [node name="SStreamLine" type="Node3D"]
 script = ExtResource("1_mi80b")

@@ -50,8 +50,7 @@ func maketubesstreammesh(points, integrationtime, U):
 				st.add_index(i0j1)
 	$Stream.mesh = st.commit()
 	#print($Stream.mesh.surface_get_arrays(0)[Mesh.ARRAY_INDEX])
-
-
+	
 func makepointsstreammesh(lpoints, scalars):
 	var points = rotyuppoints(lpoints)
 	var Npts = len(points)
