@@ -1,6 +1,7 @@
-[gd_scene load_steps=32 format=3 uid="uid://bn2xgm3m3ury6"]
+[gd_scene load_steps=40 format=3 uid="uid://bn2xgm3m3ury6"]
 
 [ext_resource type="PackedScene" uid="uid://b4kad2kuba1yn" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" id="1_2he8d"]
+[ext_resource type="Script" uid="uid://o2fh4j55orln" path="res://main.gd" id="1_82xsv"]
 [ext_resource type="Script" uid="uid://drb2c05go1xn3" path="res://paraview_streamlines.gd" id="1_p2bwx"]
 [ext_resource type="PackedScene" uid="uid://ktm7k0co2o7l" path="res://addons/mqtt/mqtt.tscn" id="2_fsyfu"]
 [ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="2_mpt64"]
@@ -12,10 +13,13 @@
 [ext_resource type="PackedScene" uid="uid://ctltchlf2j2r4" path="res://addons/xr-simulator/XRSimulator.tscn" id="5_pe4ij"]
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="6_7knfo"]
 [ext_resource type="Script" uid="uid://c44ttai2ga1a6" path="res://addons/godot-xr-tools/overrides/ground_physics_settings.gd" id="8_o1wrc"]
+[ext_resource type="PackedScene" uid="uid://c7d3acll3wppi" path="res://addons/xr-radialmenu/RadialMenu.tscn" id="12_82xsv"]
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="14_hgqvo"]
 [ext_resource type="PackedScene" uid="uid://yrhaji6vsgf2" path="res://streamlinecode/sstreamline.tscn" id="15_ecfse"]
 [ext_resource type="PackedScene" uid="uid://5g8c1x4vuxdd" path="res://paraviewcode/cube.glb" id="17_282d7"]
 [ext_resource type="PackedScene" uid="uid://cxb7uex63m1vv" path="res://paraviewcode/decimatedhalfwing.glb" id="17_tle55"]
+[ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="18_cegan"]
+[ext_resource type="PackedScene" uid="uid://cfmoahalri06d" path="res://addons/player-networking/NetworkGateway.tscn" id="19_82xsv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_g3kws"]
 
@@ -128,7 +132,25 @@ albedo_color = Color(1, 0.254902, 1, 1)
 albedo_color = Color(1, 0.611765, 1, 1)
 roughness = 0.12
 
+[sub_resource type="QuadMesh" id="QuadMesh_cegan"]
+resource_local_to_scene = true
+size = Vector2(0.2, 0.2)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_82xsv"]
+viewport_path = NodePath("Viewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_82xsv"]
+transparency = 1
+cull_mode = 2
+albedo_texture = SubResource("ViewportTexture_82xsv")
+texture_filter = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ryguw"]
+resource_local_to_scene = true
+size = Vector3(0.2, 0.2, 0.02)
+
 [node name="Main" type="Node3D"]
+script = ExtResource("1_82xsv")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_hcrru")
@@ -139,7 +161,7 @@ environment = SubResource("Environment_hcrru")
 transform = Transform3D(0.997726, 0.0478949, -0.047425, -0.040822, 0.989272, 0.140263, 0.0536341, -0.138008, 0.988978, -0.189453, 0, 2.84159)
 
 [node name="XRControllerLeft" type="XRController3D" parent="XROrigin3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.737183, 0, 0.809174)
+transform = Transform3D(0.91588, 0, -0.401452, 0, 1, 0, 0.401452, 0, 0.91588, -0.737183, 0, 1.76938)
 tracker = &"left_hand"
 
 [node name="LeftHand" parent="XROrigin3D/XRControllerLeft" instance=ExtResource("1_2he8d")]
@@ -151,8 +173,12 @@ strafe = true
 
 [node name="FunctionPickup" parent="XROrigin3D/XRControllerLeft" instance=ExtResource("4_dy63v")]
 
+[node name="RT3DNetworkGateway" type="RemoteTransform3D" parent="XROrigin3D/XRControllerLeft"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.1, 0)
+remote_path = NodePath("../../../ViewportNetworkGateway")
+
 [node name="XRControllerRight" type="XRController3D" parent="XROrigin3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.363892, 0, 0.891296)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0232998, 0, 2.07037)
 tracker = &"right_hand"
 
 [node name="RightHand" parent="XROrigin3D/XRControllerRight" instance=ExtResource("3_37mlj")]
@@ -169,6 +195,12 @@ disable_xr_in_editor = true
 
 [node name="PlayerBody" parent="XROrigin3D" instance=ExtResource("6_7knfo")]
 physics = SubResource("Resource_gxlgb")
+
+[node name="XRAimRight" type="XRNode3D" parent="XROrigin3D"]
+tracker = &"right_hand"
+pose = &"aim"
+
+[node name="RadialMenu" parent="XROrigin3D/XRAimRight" instance=ExtResource("12_82xsv")]
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.43353, 1.10122, -1.09096)
@@ -190,14 +222,14 @@ verbose_level = 1
 
 [node name="SStreamLine_placeholder" parent="ParaviewStreamlines" instance=ExtResource("15_ecfse")]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="Floor" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.18509, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
 shape = SubResource("BoxShape3D_llug4")
 debug_color = Color(0, 0.6, 0.7, 0.42)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
 mesh = SubResource("BoxMesh_724ns")
 
 [node name="StreamlineWand" parent="." instance=ExtResource("14_hgqvo")]
@@ -235,6 +267,31 @@ transform = Transform3D(1, 0, 0, 0, 4.37114e-08, 1, 0, 1, -4.37114e-08, 0, 0, 0)
 [node name="Mesh" parent="StationaryModel/decimatedhalfwing2" index="0"]
 surface_material_override/0 = SubResource("StandardMaterial3D_074og")
 
+[node name="ViewportNetworkGateway" parent="." instance=ExtResource("18_cegan")]
+transform = Transform3D(0.931495, 0, 0.363755, 0, 1, 0, -0.363755, 0, 0.931495, -0.737183, 0.1, 1.76938)
+screen_size = Vector2(0.2, 0.2)
+viewport_size = Vector2(700, 400)
+scene_properties_keys = PackedStringArray()
+
+[node name="Viewport" parent="ViewportNetworkGateway" index="0"]
+size = Vector2i(700, 400)
+
+[node name="NetworkGateway" parent="ViewportNetworkGateway/Viewport" index="0" instance=ExtResource("19_82xsv")]
+offset_right = 682.0
+offset_bottom = 410.0
+
+[node name="Screen" parent="ViewportNetworkGateway" index="1"]
+mesh = SubResource("QuadMesh_cegan")
+surface_material_override/0 = SubResource("StandardMaterial3D_82xsv")
+
+[node name="StaticBody3D" parent="ViewportNetworkGateway" index="2"]
+screen_size = Vector2(0.2, 0.2)
+viewport_size = Vector2(700, 400)
+
+[node name="CollisionShape3D" parent="ViewportNetworkGateway/StaticBody3D" index="0"]
+shape = SubResource("BoxShape3D_ryguw")
+debug_color = Color(0, 0.6, 0.7, 0.42)
+
 [connection signal="broker_connected" from="ParaviewStreamlines/MQTT" to="ParaviewStreamlines" method="_on_mqtt_broker_connected"]
 [connection signal="received_message" from="ParaviewStreamlines/MQTT" to="ParaviewStreamlines" method="_on_mqtt_received_message"]
 [connection signal="action_pressed" from="StreamlineWand" to="ParaviewStreamlines" method="_on_pickable_object_action_pressed"]
@@ -243,3 +300,4 @@ surface_material_override/0 = SubResource("StandardMaterial3D_074og")
 [editable path="cube"]
 [editable path="StationaryModel/decimatedhalfwing"]
 [editable path="StationaryModel/decimatedhalfwing2"]
+[editable path="ViewportNetworkGateway"]

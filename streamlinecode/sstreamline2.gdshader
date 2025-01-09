@@ -18,4 +18,3 @@ void fragment() {
 	if (tt < 0.1)
 		ALBEDO.y = 1.0;
 }
-
