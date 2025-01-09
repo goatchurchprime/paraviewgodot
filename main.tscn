@@ -1,20 +1,21 @@
-[gd_scene load_steps=31 format=3 uid="uid://bn2xgm3m3ury6"]
+[gd_scene load_steps=32 format=3 uid="uid://bn2xgm3m3ury6"]
 
 [ext_resource type="PackedScene" uid="uid://b4kad2kuba1yn" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" id="1_2he8d"]
-[ext_resource type="Script" path="res://paraview_streamlines.gd" id="1_p2bwx"]
+[ext_resource type="Script" uid="uid://drb2c05go1xn3" path="res://paraview_streamlines.gd" id="1_p2bwx"]
 [ext_resource type="PackedScene" uid="uid://ktm7k0co2o7l" path="res://addons/mqtt/mqtt.tscn" id="2_fsyfu"]
 [ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="2_mpt64"]
 [ext_resource type="PackedScene" uid="uid://l2n30mpbkdyw" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_hand_low.tscn" id="3_37mlj"]
-[ext_resource type="PackedScene" uid="uid://dendsjqephs4a" path="res://streamlinecode/streamline.tscn" id="3_dn4qm"]
-[ext_resource type="Shader" path="res://streamlinecode/streamline.gdshader" id="3_jth2b"]
 [ext_resource type="PackedScene" uid="uid://kyhaogt0a4q8" path="res://addons/godot-xr-tools/functions/movement_flight.tscn" id="3_sp5j6"]
 [ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="4_dy63v"]
 [ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="4_eskk3"]
 [ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="5_pab4q"]
 [ext_resource type="PackedScene" uid="uid://ctltchlf2j2r4" path="res://addons/xr-simulator/XRSimulator.tscn" id="5_pe4ij"]
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="6_7knfo"]
-[ext_resource type="Script" path="res://addons/godot-xr-tools/overrides/ground_physics_settings.gd" id="8_o1wrc"]
+[ext_resource type="Script" uid="uid://c44ttai2ga1a6" path="res://addons/godot-xr-tools/overrides/ground_physics_settings.gd" id="8_o1wrc"]
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="14_hgqvo"]
+[ext_resource type="PackedScene" uid="uid://yrhaji6vsgf2" path="res://streamlinecode/sstreamline.tscn" id="15_ecfse"]
+[ext_resource type="PackedScene" uid="uid://5g8c1x4vuxdd" path="res://paraviewcode/cube.glb" id="17_282d7"]
+[ext_resource type="PackedScene" uid="uid://cxb7uex63m1vv" path="res://paraviewcode/decimatedhalfwing.glb" id="17_tle55"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_g3kws"]
 
@@ -24,6 +25,7 @@ sky_material = SubResource("ProceduralSkyMaterial_g3kws")
 [sub_resource type="Environment" id="Environment_hcrru"]
 background_mode = 2
 sky = SubResource("Sky_guvv8")
+glow_blend_mode = 1
 
 [sub_resource type="Resource" id="Resource_gxlgb"]
 script = ExtResource("8_o1wrc")
@@ -36,23 +38,6 @@ jump_max_slope = 45.0
 jump_velocity = 3.0
 bounciness = 0.0
 bounce_threshold = 1.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_nh770"]
-resource_local_to_scene = true
-render_priority = 0
-shader = ExtResource("3_jth2b")
-shader_parameter/streamlineYstretch = 1.0
-
-[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_wacjv"]
-resource_local_to_scene = true
-material = SubResource("ShaderMaterial_nh770")
-radius = 0.05
-radial_steps = 4
-sections = 100
-section_length = 0.02
-section_rings = 2
-cap_top = false
-cap_bottom = false
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_llug4"]
 size = Vector3(20, 1, 20)
@@ -72,7 +57,7 @@ material = SubResource("StandardMaterial3D_h23ba")
 size = Vector3(20, 1, 20)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_15xqe"]
-size = Vector3(0.04, 0.5, 0.04)
+size = Vector3(0.04, 0.3, 0.04)
 
 [sub_resource type="Shader" id="Shader_wwkiw"]
 code = "// NOTE: Shader automatically converted from Godot Engine 4.3.stable's StandardMaterial3D.
@@ -133,7 +118,15 @@ shader_parameter/uv2_offset = Vector3(0, 0, 0)
 
 [sub_resource type="BoxMesh" id="BoxMesh_b3ccu"]
 material = SubResource("ShaderMaterial_wtcw8")
-size = Vector3(0.04, 0.5, 0.04)
+size = Vector3(0.04, 0.3, 0.04)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_77bh0"]
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0.254902, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_074og"]
+albedo_color = Color(1, 0.611765, 1, 1)
+roughness = 0.12
 
 [node name="Main" type="Node3D"]
 
@@ -180,6 +173,13 @@ physics = SubResource("Resource_gxlgb")
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.43353, 1.10122, -1.09096)
 light_energy = 2.0
+shadow_enabled = true
+omni_range = 20.0
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00226104, -1.58701, 0.171522)
+visible = false
+light_energy = 2.0
 omni_range = 20.0
 
 [node name="ParaviewStreamlines" type="Node3D" parent="."]
@@ -188,33 +188,58 @@ script = ExtResource("1_p2bwx")
 [node name="MQTT" parent="ParaviewStreamlines" instance=ExtResource("2_fsyfu")]
 verbose_level = 1
 
-[node name="Streamline" parent="ParaviewStreamlines" instance=ExtResource("3_dn4qm")]
-mesh = SubResource("TubeTrailMesh_wacjv")
+[node name="SStreamLine_placeholder" parent="ParaviewStreamlines" instance=ExtResource("15_ecfse")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.18509, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("BoxShape3D_llug4")
+debug_color = Color(0, 0.6, 0.7, 0.42)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
 mesh = SubResource("BoxMesh_724ns")
 
-[node name="PickableObject" parent="." instance=ExtResource("14_hgqvo")]
+[node name="StreamlineWand" parent="." instance=ExtResource("14_hgqvo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -1.5, 0)
 gravity_scale = 0.0
 freeze = true
 freeze_mode = 0
 ranged_grab_method = 2
 
-[node name="CollisionShape3D" parent="PickableObject" index="0"]
+[node name="CollisionShape3D" parent="StreamlineWand" index="0"]
 shape = SubResource("BoxShape3D_15xqe")
+debug_color = Color(0, 0.6, 0.7, 0.42)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PickableObject"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StreamlineWand"]
 mesh = SubResource("BoxMesh_b3ccu")
+
+[node name="cube" parent="." instance=ExtResource("17_282d7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.339539, 0)
+visible = false
+
+[node name="Mesh" parent="cube" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_77bh0")
+
+[node name="StationaryModel" type="Node3D" parent="."]
+
+[node name="decimatedhalfwing" parent="StationaryModel" instance=ExtResource("17_tle55")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+
+[node name="Mesh" parent="StationaryModel/decimatedhalfwing" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_074og")
+
+[node name="decimatedhalfwing2" parent="StationaryModel" instance=ExtResource("17_tle55")]
+transform = Transform3D(1, 0, 0, 0, 4.37114e-08, 1, 0, 1, -4.37114e-08, 0, 0, 0)
+
+[node name="Mesh" parent="StationaryModel/decimatedhalfwing2" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_074og")
 
 [connection signal="broker_connected" from="ParaviewStreamlines/MQTT" to="ParaviewStreamlines" method="_on_mqtt_broker_connected"]
 [connection signal="received_message" from="ParaviewStreamlines/MQTT" to="ParaviewStreamlines" method="_on_mqtt_received_message"]
-[connection signal="action_pressed" from="PickableObject" to="ParaviewStreamlines" method="_on_pickable_object_action_pressed"]
+[connection signal="action_pressed" from="StreamlineWand" to="ParaviewStreamlines" method="_on_pickable_object_action_pressed"]
 
-[editable path="PickableObject"]
+[editable path="StreamlineWand"]
+[editable path="cube"]
+[editable path="StationaryModel/decimatedhalfwing"]
+[editable path="StationaryModel/decimatedhalfwing2"]

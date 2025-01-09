@@ -15,7 +15,7 @@ This app depends on a number of external libraries/assets you can pull from the 
 (These are too big to ship with the project)
 
 * **Godot XR Tools** Version: 4.3.3, installs into addons/godot-xr-tools
-* **Godot OpenXR Vendors plugin for Godot 4.3** Version: 3.0.0, installs into addons/godotopenxrvendors
+* **Godot OpenXR Vendors plugin for Godot 4.3** Version: 3.0.1, installs into addons/godotopenxrvendors
 
 ### Libraries not yet needed 
 

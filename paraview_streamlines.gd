@@ -2,28 +2,46 @@ extends Node3D
 
 var brokerurl = "mosquitto.doesliverpool.xyz"
 
-@onready var streamlines = [ $Streamline ]
+@onready var SStreamlineScene = load("res://streamlinecode/sstreamline.tscn")
+
 func _ready():
 	$MQTT.connect_to_broker(brokerurl)
-	var streamlinescene = load("res://streamlinecode/streamline.tscn")
-	for i in range(10):
-		var d = streamlinescene.instantiate()
-		add_child(d)
-		streamlines.append(d)
-		d.visible = false
+	get_node("../StreamlineWand/MeshInstance3D").mesh.material.set_shader_parameter("albedo", Color.DARK_BLUE)
+	
+	var points = [ ]
+	var scalars = [ ]
+	var integrationtime = [ ]
+	var U = [ ]
+	for i in range(200):
+		points.push_back(Vector3((i-50)*0.05, sin(i*0.2)*0.3, cos(i*0.2)*0.3-1.3))
+		scalars.push_back(sin(i*0.3)*2+3)
+		integrationtime.push_back((sin(i*0.3) + i*0.3)/50.0)
+		U.push_back((0.3*cos(i*0.3) + 0.3))
+	#$SStreamLine_placeholder.makepointsstreammesh(points, scalars)
+	$SStreamLine_placeholder.maketubesstreammesh(points, integrationtime, U)
+
+
 
 func _process(delta):
 	pass
 
 func _on_mqtt_broker_connected():
 	$MQTT.subscribe("paraview/#")
+	get_node("../StreamlineWand/MeshInstance3D").mesh.material.set_shader_parameter("albedo", Color.YELLOW)
 	
 var Istreamline = 1
+
 func _on_mqtt_received_message(topic, message):
 	if topic == "paraview/streamdata":
 		var x = JSON.parse_string(message)
-		streamlines[Istreamline].setstreampoints(x["points"], x["scalars"])
-		Istreamline = (Istreamline + 1) % len(streamlines)
+		var sstreamline = SStreamlineScene.instantiate()
+		var U = [ ]
+		for u in x["U"]:
+			var ll = 2.0/sqrt(Vector3(u[0], u[1], u[2]).length())
+			U.push_back(clamp(ll, 0.01, 1.0))
+		sstreamline.maketubesstreammesh(x["points"], x["IntegrationTime"], U)
+		add_child(sstreamline)
+		$SStreamLine_placeholder.visible = false
 	else:
 		print("Rec ", topic, " ", message)
 
@@ -31,8 +49,11 @@ var k = 0.0
 func _input(event):
 	if event is InputEventKey and event.is_pressed() and event.keycode == KEY_T:
 		var r = {"Point1":[-3.0,k,-1.6], "Point2":[-3.0,k,-1.4]}
-		$MQTT.publish("paraview/streamdef", JSON.stringify(r))
+		#$MQTT.publish("paraview/streamdef", JSON.stringify(r))
 		k += 0.2
+		_on_pickable_object_action_pressed(get_node("../StreamlineWand"))
+		get_node("../StreamlineWand").position.z += 0.1
+		get_node("../StreamlineWand").rotation_degrees.x += -10
 		
 	if event is InputEventKey and event.is_pressed() and event.keycode == KEY_Y:
 		$Streamline.setstreampoints(Dpoints, Dscalars)
