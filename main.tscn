@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://bn2xgm3m3ury6"]
+[gd_scene load_steps=48 format=3 uid="uid://bn2xgm3m3ury6"]
 
 [ext_resource type="PackedScene" uid="uid://b4kad2kuba1yn" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" id="1_2he8d"]
 [ext_resource type="Script" uid="uid://o2fh4j55orln" path="res://main.gd" id="1_82xsv"]
@@ -20,6 +20,8 @@
 [ext_resource type="PackedScene" uid="uid://cxb7uex63m1vv" path="res://paraviewcode/decimatedhalfwing.glb" id="17_tle55"]
 [ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="18_cegan"]
 [ext_resource type="PackedScene" uid="uid://cfmoahalri06d" path="res://addons/player-networking/NetworkGateway.tscn" id="19_82xsv"]
+[ext_resource type="PackedScene" uid="uid://bgw2tanm4il3j" path="res://avatars/tunnelvrplayeravatar/VRPlayerAvatar.tscn" id="21_getpj"]
+[ext_resource type="PackedScene" uid="uid://djehrm378cbde" path="res://addons/player-networking/PlayerFrameLocal.tscn" id="22_ryguw"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_g3kws"]
 
@@ -30,6 +32,37 @@ sky_material = SubResource("ProceduralSkyMaterial_g3kws")
 background_mode = 2
 sky = SubResource("Sky_guvv8")
 glow_blend_mode = 1
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ryguw"]
+animation = &"Grip"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_d13ii"]
+animation = &"Grip"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_1u8w0"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D:Little_Distal_L", "Armature/Skeleton3D:Little_Intermediate_L", "Armature/Skeleton3D:Little_Metacarpal_L", "Armature/Skeleton3D:Little_Proximal_L", "Armature/Skeleton3D:Middle_Distal_L", "Armature/Skeleton3D:Middle_Intermediate_L", "Armature/Skeleton3D:Middle_Metacarpal_L", "Armature/Skeleton3D:Middle_Proximal_L", "Armature/Skeleton3D:Ring_Distal_L", "Armature/Skeleton3D:Ring_Intermediate_L", "Armature/Skeleton3D:Ring_Metacarpal_L", "Armature/Skeleton3D:Ring_Proximal_L", "Armature/Skeleton3D:Thumb_Distal_L", "Armature/Skeleton3D:Thumb_Metacarpal_L", "Armature/Skeleton3D:Thumb_Proximal_L", "Armature/Skeleton:Little_Distal_L", "Armature/Skeleton:Little_Intermediate_L", "Armature/Skeleton:Little_Proximal_L", "Armature/Skeleton:Middle_Distal_L", "Armature/Skeleton:Middle_Intermediate_L", "Armature/Skeleton:Middle_Proximal_L", "Armature/Skeleton:Ring_Distal_L", "Armature/Skeleton:Ring_Intermediate_L", "Armature/Skeleton:Ring_Proximal_L", "Armature/Skeleton:Thumb_Distal_L", "Armature/Skeleton:Thumb_Proximal_L"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0odxb"]
+animation = &"Grip 5"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_lswn8"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D:Index_Distal_L", "Armature/Skeleton3D:Index_Intermediate_L", "Armature/Skeleton3D:Index_Metacarpal_L", "Armature/Skeleton3D:Index_Proximal_L", "Armature/Skeleton:Index_Distal_L", "Armature/Skeleton:Index_Intermediate_L", "Armature/Skeleton:Index_Proximal_L"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_a6jrf"]
+graph_offset = Vector2(-536, 11)
+nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_ryguw")
+nodes/ClosedHand1/position = Vector2(-600, 300)
+nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_d13ii")
+nodes/ClosedHand2/position = Vector2(-360, 300)
+nodes/Grip/node = SubResource("AnimationNodeBlend2_1u8w0")
+nodes/Grip/position = Vector2(0, 20)
+nodes/OpenHand/node = SubResource("AnimationNodeAnimation_0odxb")
+nodes/OpenHand/position = Vector2(-600, 100)
+nodes/Trigger/node = SubResource("AnimationNodeBlend2_lswn8")
+nodes/Trigger/position = Vector2(-360, 20)
+node_connections = [&"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1", &"output", 0, &"Grip"]
 
 [sub_resource type="Resource" id="Resource_gxlgb"]
 script = ExtResource("8_o1wrc")
@@ -134,20 +167,20 @@ roughness = 0.12
 
 [sub_resource type="QuadMesh" id="QuadMesh_cegan"]
 resource_local_to_scene = true
-size = Vector2(0.2, 0.2)
+size = Vector2(0.3, 0.2)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_82xsv"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_xuqvo"]
 viewport_path = NodePath("Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_82xsv"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ryguw"]
 transparency = 1
 cull_mode = 2
-albedo_texture = SubResource("ViewportTexture_82xsv")
+albedo_texture = SubResource("ViewportTexture_xuqvo")
 texture_filter = 1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ryguw"]
 resource_local_to_scene = true
-size = Vector3(0.2, 0.2, 0.02)
+size = Vector3(0.3, 0.2, 0.02)
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_82xsv")
@@ -165,6 +198,9 @@ transform = Transform3D(0.91588, 0, -0.401452, 0, 1, 0, 0.401452, 0, 0.91588, -0
 tracker = &"left_hand"
 
 [node name="LeftHand" parent="XROrigin3D/XRControllerLeft" instance=ExtResource("1_2he8d")]
+
+[node name="AnimationTree" parent="XROrigin3D/XRControllerLeft/LeftHand" index="1"]
+tree_root = SubResource("AnimationNodeBlendTree_a6jrf")
 
 [node name="MovementDirect" parent="XROrigin3D/XRControllerLeft" instance=ExtResource("2_mpt64")]
 strafe = true
@@ -218,7 +254,7 @@ omni_range = 20.0
 script = ExtResource("1_p2bwx")
 
 [node name="MQTT" parent="ParaviewStreamlines" instance=ExtResource("2_fsyfu")]
-verbose_level = 1
+verbose_level = 0
 
 [node name="SStreamLine_placeholder" parent="ParaviewStreamlines" instance=ExtResource("15_ecfse")]
 
@@ -268,8 +304,8 @@ transform = Transform3D(1, 0, 0, 0, 4.37114e-08, 1, 0, 1, -4.37114e-08, 0, 0, 0)
 surface_material_override/0 = SubResource("StandardMaterial3D_074og")
 
 [node name="ViewportNetworkGateway" parent="." instance=ExtResource("18_cegan")]
-transform = Transform3D(0.931495, 0, 0.363755, 0, 1, 0, -0.363755, 0, 0.931495, -0.737183, 0.1, 1.76938)
-screen_size = Vector2(0.2, 0.2)
+transform = Transform3D(0.931495, 0, 0.363756, 0, 1, 0, -0.363756, 0, 0.931495, -0.737183, 0.1, 1.76938)
+screen_size = Vector2(0.3, 0.2)
 viewport_size = Vector2(700, 400)
 scene_properties_keys = PackedStringArray()
 
@@ -279,23 +315,33 @@ size = Vector2i(700, 400)
 [node name="NetworkGateway" parent="ViewportNetworkGateway/Viewport" index="0" instance=ExtResource("19_82xsv")]
 offset_right = 682.0
 offset_bottom = 410.0
+playersnodepath = NodePath("../../../Players")
+localplayerscene = ""
 
 [node name="Screen" parent="ViewportNetworkGateway" index="1"]
 mesh = SubResource("QuadMesh_cegan")
-surface_material_override/0 = SubResource("StandardMaterial3D_82xsv")
+surface_material_override/0 = SubResource("StandardMaterial3D_ryguw")
 
 [node name="StaticBody3D" parent="ViewportNetworkGateway" index="2"]
-screen_size = Vector2(0.2, 0.2)
+screen_size = Vector2(0.3, 0.2)
 viewport_size = Vector2(700, 400)
 
 [node name="CollisionShape3D" parent="ViewportNetworkGateway/StaticBody3D" index="0"]
 shape = SubResource("BoxShape3D_ryguw")
 debug_color = Color(0, 0.6, 0.7, 0.42)
 
+[node name="Players" type="Node3D" parent="."]
+
+[node name="VRPlayerAvatar" parent="Players" instance=ExtResource("21_getpj")]
+
+[node name="PlayerFrame" parent="Players/VRPlayerAvatar" instance=ExtResource("22_ryguw")]
+
 [connection signal="broker_connected" from="ParaviewStreamlines/MQTT" to="ParaviewStreamlines" method="_on_mqtt_broker_connected"]
 [connection signal="received_message" from="ParaviewStreamlines/MQTT" to="ParaviewStreamlines" method="_on_mqtt_received_message"]
 [connection signal="action_pressed" from="StreamlineWand" to="ParaviewStreamlines" method="_on_pickable_object_action_pressed"]
 
+[editable path="XROrigin3D/XRControllerLeft/LeftHand"]
+[editable path="XROrigin3D/XRControllerLeft/LeftHand/Hand_Nails_low_L"]
 [editable path="StreamlineWand"]
 [editable path="cube"]
 [editable path="StationaryModel/decimatedhalfwing"]
