@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://bn2xgm3m3ury6"]
+[gd_scene load_steps=50 format=3 uid="uid://bn2xgm3m3ury6"]
 
 [ext_resource type="PackedScene" uid="uid://b4kad2kuba1yn" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" id="1_2he8d"]
 [ext_resource type="Script" uid="uid://o2fh4j55orln" path="res://main.gd" id="1_82xsv"]
@@ -20,6 +20,7 @@
 [ext_resource type="PackedScene" uid="uid://cxb7uex63m1vv" path="res://paraviewcode/decimatedhalfwing.glb" id="17_tle55"]
 [ext_resource type="PackedScene" uid="uid://clujaf3u776a3" path="res://addons/godot-xr-tools/objects/viewport_2d_in_3d.tscn" id="18_cegan"]
 [ext_resource type="PackedScene" uid="uid://cfmoahalri06d" path="res://addons/player-networking/NetworkGateway.tscn" id="19_82xsv"]
+[ext_resource type="PackedScene" uid="uid://dhs6y120lsk68" path="res://paraviewcode/glidercfd1.glb" id="19_d13ii"]
 [ext_resource type="PackedScene" uid="uid://bgw2tanm4il3j" path="res://avatars/tunnelvrplayeravatar/VRPlayerAvatar.tscn" id="21_getpj"]
 [ext_resource type="PackedScene" uid="uid://djehrm378cbde" path="res://addons/player-networking/PlayerFrameLocal.tscn" id="22_ryguw"]
 
@@ -33,34 +34,34 @@ background_mode = 2
 sky = SubResource("Sky_guvv8")
 glow_blend_mode = 1
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ryguw"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1u8w0"]
 animation = &"Grip"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_d13ii"]
-animation = &"Grip"
-
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_1u8w0"]
-filter_enabled = true
-filters = ["Armature/Skeleton3D:Little_Distal_L", "Armature/Skeleton3D:Little_Intermediate_L", "Armature/Skeleton3D:Little_Metacarpal_L", "Armature/Skeleton3D:Little_Proximal_L", "Armature/Skeleton3D:Middle_Distal_L", "Armature/Skeleton3D:Middle_Intermediate_L", "Armature/Skeleton3D:Middle_Metacarpal_L", "Armature/Skeleton3D:Middle_Proximal_L", "Armature/Skeleton3D:Ring_Distal_L", "Armature/Skeleton3D:Ring_Intermediate_L", "Armature/Skeleton3D:Ring_Metacarpal_L", "Armature/Skeleton3D:Ring_Proximal_L", "Armature/Skeleton3D:Thumb_Distal_L", "Armature/Skeleton3D:Thumb_Metacarpal_L", "Armature/Skeleton3D:Thumb_Proximal_L", "Armature/Skeleton:Little_Distal_L", "Armature/Skeleton:Little_Intermediate_L", "Armature/Skeleton:Little_Proximal_L", "Armature/Skeleton:Middle_Distal_L", "Armature/Skeleton:Middle_Intermediate_L", "Armature/Skeleton:Middle_Proximal_L", "Armature/Skeleton:Ring_Distal_L", "Armature/Skeleton:Ring_Intermediate_L", "Armature/Skeleton:Ring_Proximal_L", "Armature/Skeleton:Thumb_Distal_L", "Armature/Skeleton:Thumb_Proximal_L"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0odxb"]
-animation = &"Grip 5"
+animation = &"Grip"
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_lswn8"]
 filter_enabled = true
+filters = ["Armature/Skeleton3D:Little_Distal_L", "Armature/Skeleton3D:Little_Intermediate_L", "Armature/Skeleton3D:Little_Metacarpal_L", "Armature/Skeleton3D:Little_Proximal_L", "Armature/Skeleton3D:Middle_Distal_L", "Armature/Skeleton3D:Middle_Intermediate_L", "Armature/Skeleton3D:Middle_Metacarpal_L", "Armature/Skeleton3D:Middle_Proximal_L", "Armature/Skeleton3D:Ring_Distal_L", "Armature/Skeleton3D:Ring_Intermediate_L", "Armature/Skeleton3D:Ring_Metacarpal_L", "Armature/Skeleton3D:Ring_Proximal_L", "Armature/Skeleton3D:Thumb_Distal_L", "Armature/Skeleton3D:Thumb_Metacarpal_L", "Armature/Skeleton3D:Thumb_Proximal_L", "Armature/Skeleton:Little_Distal_L", "Armature/Skeleton:Little_Intermediate_L", "Armature/Skeleton:Little_Proximal_L", "Armature/Skeleton:Middle_Distal_L", "Armature/Skeleton:Middle_Intermediate_L", "Armature/Skeleton:Middle_Proximal_L", "Armature/Skeleton:Ring_Distal_L", "Armature/Skeleton:Ring_Intermediate_L", "Armature/Skeleton:Ring_Proximal_L", "Armature/Skeleton:Thumb_Distal_L", "Armature/Skeleton:Thumb_Proximal_L"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_a6jrf"]
+animation = &"Grip 5"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_xuqvo"]
+filter_enabled = true
 filters = ["Armature/Skeleton3D:Index_Distal_L", "Armature/Skeleton3D:Index_Intermediate_L", "Armature/Skeleton3D:Index_Metacarpal_L", "Armature/Skeleton3D:Index_Proximal_L", "Armature/Skeleton:Index_Distal_L", "Armature/Skeleton:Index_Intermediate_L", "Armature/Skeleton:Index_Proximal_L"]
 
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_a6jrf"]
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_qsp4k"]
 graph_offset = Vector2(-536, 11)
-nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_ryguw")
+nodes/ClosedHand1/node = SubResource("AnimationNodeAnimation_1u8w0")
 nodes/ClosedHand1/position = Vector2(-600, 300)
-nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_d13ii")
+nodes/ClosedHand2/node = SubResource("AnimationNodeAnimation_0odxb")
 nodes/ClosedHand2/position = Vector2(-360, 300)
-nodes/Grip/node = SubResource("AnimationNodeBlend2_1u8w0")
+nodes/Grip/node = SubResource("AnimationNodeBlend2_lswn8")
 nodes/Grip/position = Vector2(0, 20)
-nodes/OpenHand/node = SubResource("AnimationNodeAnimation_0odxb")
+nodes/OpenHand/node = SubResource("AnimationNodeAnimation_a6jrf")
 nodes/OpenHand/position = Vector2(-600, 100)
-nodes/Trigger/node = SubResource("AnimationNodeBlend2_lswn8")
+nodes/Trigger/node = SubResource("AnimationNodeBlend2_xuqvo")
 nodes/Trigger/position = Vector2(-360, 20)
 node_connections = [&"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1", &"output", 0, &"Grip"]
 
@@ -165,17 +166,21 @@ albedo_color = Color(1, 0.254902, 1, 1)
 albedo_color = Color(1, 0.611765, 1, 1)
 roughness = 0.12
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kq58d"]
+cull_mode = 1
+albedo_color = Color(1, 0.396078, 1, 1)
+
 [sub_resource type="QuadMesh" id="QuadMesh_cegan"]
 resource_local_to_scene = true
 size = Vector2(0.3, 0.2)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_xuqvo"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_seu75"]
 viewport_path = NodePath("Viewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ryguw"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_htxhm"]
 transparency = 1
 cull_mode = 2
-albedo_texture = SubResource("ViewportTexture_xuqvo")
+albedo_texture = SubResource("ViewportTexture_seu75")
 texture_filter = 1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ryguw"]
@@ -224,7 +229,7 @@ bones/22/rotation = Quaternion(0.0585786, 0.0216483, -0.269905, 0.96086)
 bones/23/rotation = Quaternion(0.00687177, -0.00357275, -0.211953, 0.977249)
 
 [node name="AnimationTree" parent="XROrigin3D/XRControllerLeft/LeftHand" index="1"]
-tree_root = SubResource("AnimationNodeBlendTree_a6jrf")
+tree_root = SubResource("AnimationNodeBlendTree_qsp4k")
 
 [node name="MovementDirect" parent="XROrigin3D/XRControllerLeft" instance=ExtResource("2_mpt64")]
 strafe = true
@@ -317,6 +322,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_77bh0")
 
 [node name="decimatedhalfwing" parent="StationaryModel" instance=ExtResource("17_tle55")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+visible = false
 
 [node name="Mesh" parent="StationaryModel/decimatedhalfwing" index="0"]
 surface_material_override/0 = SubResource("StandardMaterial3D_074og")
@@ -326,6 +332,11 @@ transform = Transform3D(1, 0, 0, 0, 4.37114e-08, 1, 0, 1, -4.37114e-08, 0, 0, 0)
 
 [node name="Mesh" parent="StationaryModel/decimatedhalfwing2" index="0"]
 surface_material_override/0 = SubResource("StandardMaterial3D_074og")
+
+[node name="glidercfd1" parent="StationaryModel" instance=ExtResource("19_d13ii")]
+
+[node name="Puma-VG0-AL10-Fluid_domain" parent="StationaryModel/glidercfd1" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_kq58d")
 
 [node name="ViewportNetworkGateway" parent="." instance=ExtResource("18_cegan")]
 transform = Transform3D(0.931495, 0, 0.363756, 0, 1, 0, -0.363756, 0, 0.931495, -0.737183, 0.1, 1.76938)
@@ -344,7 +355,7 @@ localplayerscene = ""
 
 [node name="Screen" parent="ViewportNetworkGateway" index="1"]
 mesh = SubResource("QuadMesh_cegan")
-surface_material_override/0 = SubResource("StandardMaterial3D_ryguw")
+surface_material_override/0 = SubResource("StandardMaterial3D_htxhm")
 
 [node name="StaticBody3D" parent="ViewportNetworkGateway" index="2"]
 screen_size = Vector2(0.3, 0.2)
@@ -370,4 +381,5 @@ debug_color = Color(0, 0.6, 0.7, 0.42)
 [editable path="cube"]
 [editable path="StationaryModel/decimatedhalfwing"]
 [editable path="StationaryModel/decimatedhalfwing2"]
+[editable path="StationaryModel/glidercfd1"]
 [editable path="ViewportNetworkGateway"]

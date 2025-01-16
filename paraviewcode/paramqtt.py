@@ -49,7 +49,7 @@ def transmitstreamlines(recid, a, bnegy):
     fout = open(transmitsteamlinesfile, "w") if transmitsteamlinesfile else None
     while cells.GetNextCell(indices):
         ptids = [ indices.GetId(i)  for i in range(indices.GetNumberOfIds()) ]
-        points = [ fnegy(a.points.GetPoint(j))  for j in ptids 
+        points = [ fnegy(a.points.GetPoint(j))  for j in ptids ]
         jout = { "recid":recid, "lineno":lineno, "points":points }
         for k in ["IntegrationTime", "p"]:
             a.point_data.SetActiveScalars(k)
