@@ -37,6 +37,11 @@ print("Done q.UpdatePipeline")
 def transmitstreamlines(recid, a, bnegy):
     indices = vtkIdList()
     cells = a.GetLines()
+
+    # could get at the arrays directly without the iterator stuff like:
+    #numpy.asarray(cells.data)
+    #numpy.asarray(cells.offsets_array)
+
     cells.InitTraversal()
     lineno = 0
     def fnegy(p):

@@ -62,6 +62,8 @@ func _on_node_added(node: Node):
 		if node.tracker == "left_hand" or node.tracker == "right_hand":
 			if node.pose == "aim":
 				xrnodes_aim.append(node)
+			else:
+				prints("Bad nodepose", node, node.tracker, node.pose)
 
 func _search_first_xr_nodes(node: Node):
 	for child in node.get_children():

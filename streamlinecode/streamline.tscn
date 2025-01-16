@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://dendsjqephs4a"]
 
 [ext_resource type="Shader" uid="uid://cvl8voo8yndmf" path="res://streamlinecode/streamline.gdshader" id="1_v3stf"]
-[ext_resource type="Script" path="res://streamlinecode/streamline.gd" id="2_bimhy"]
+[ext_resource type="Script" uid="uid://df1kvxqawtlyj" path="res://streamlinecode/streamline.gd" id="2_bimhy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vwdhb"]
 resource_local_to_scene = true

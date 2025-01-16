@@ -18,7 +18,7 @@ void vertex() {
 	if (fract(phase) < 0.1)
 		frad *= 0.5;
 	vec3 p = VERTEX;
-	
+
 	VERTEX = s.xyz + (p.x*svx.xyz + p.z*svz.xyz)*frad;
 }
 
@@ -26,7 +26,7 @@ void fragment() {
 	ALBEDO.r = (scalar+1.0)/3.0;
 //	if (UV.y >= 0.45)
 //		ALBEDO.yz = vec2(0.0, 0.0);
-	//if (UV.y > 0.8) 
+	//if (UV.y > 0.8)
 	//	ALBEDO.yz = vec2(0.0, 0.0);
 	//ALBEDO = vec3(s.x, s.x, s.x);
 }

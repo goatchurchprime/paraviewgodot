@@ -1,12 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://yrhaji6vsgf2"]
+[gd_scene load_steps=6 format=3 uid="uid://yrhaji6vsgf2"]
 
 [ext_resource type="Script" uid="uid://d2hs1qhs8y21g" path="res://streamlinecode/sstreamline.gd" id="1_mi80b"]
-[ext_resource type="Shader" uid="uid://l867x45r8pu8" path="res://sstreamline2.gdshader" id="2_2264k"]
-[ext_resource type="Shader" path="res://streamlinecode/sstreamline2.gdshader" id="3_a3r4c"]
+[ext_resource type="Shader" uid="uid://b06qpfc22lm78" path="res://streamlinecode/sstreamline2.gdshader" id="3_a3r4c"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_p71va"]
 render_priority = 0
-shader = ExtResource("2_2264k")
+shader = ExtResource("3_a3r4c")
 shader_parameter/albedo = Color(1, 0, 0, 1)
 shader_parameter/rad = 0.02
 
