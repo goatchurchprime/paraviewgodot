@@ -4,6 +4,8 @@ var brokerurl = "mosquitto.doesliverpool.xyz"
 
 @onready var SStreamlineScene = load("res://streamlinecode/sstreamline.tscn")
 
+var predatamarkerrecid = 0
+
 func _ready():
 	$MQTT.connect_to_broker(brokerurl)
 	get_node("../StreamlineWand/MeshInstance3D").mesh.material.set_shader_parameter("albedo", Color.DARK_BLUE)
@@ -18,16 +20,24 @@ func _ready():
 		integrationtime.push_back((sin(i*0.3) + i*0.3)/50.0)
 		U.push_back((0.3*cos(i*0.3) + 0.3))
 	#$SStreamLine_placeholder.makepointsstreammesh(points, scalars)
-	$SStreamLine_placeholder.maketubesstreammesh(points, integrationtime, U)
+	$Streamlines/SStreamLine_placeholder.maketubesstreammesh(points, integrationtime, U)
 
+var streamvelx = 0.0
+var zerox = 0.0
+var utimespeed = 0.5
+var utimefac = 12.0
+var stripecancel = 1.0
 
-
-func _process(delta):
-	pass
+func updatestreamvelx(lstreamvelx, lzerox):
+	streamvelx = lstreamvelx
+	zerox = lzerox
+	prints("streamvelx, zerox", streamvelx, zerox)
+	for s in $Streamlines.get_children():
+		s.setvelocityaddedinx(streamvelx, zerox, utimespeed, utimefac, stripecancel)
 
 func _on_mqtt_broker_connected():
 	$MQTT.subscribe("paraview/#")
-	get_node("../StreamlineWand/MeshInstance3D").mesh.material.set_shader_parameter("albedo", Color.YELLOW)
+	get_node("../StreamlineWand/MeshInstance3D").mesh.material.set_shader_parameter("albedo", Color.LAWN_GREEN)
 	
 var Istreamline = 1
 
@@ -40,15 +50,29 @@ func _on_mqtt_received_message(topic, message):
 			var ll = 2.0/sqrt(Vector3(u[0], u[1], u[2]).length())
 			U.push_back(clamp(ll, 0.01, 1.0))
 		sstreamline.maketubesstreammesh(x["points"], x["IntegrationTime"], U)
-		add_child(sstreamline)
-		$SStreamLine_placeholder.visible = false
+		sstreamline.setvelocityaddedinx(streamvelx, zerox, utimespeed, utimefac, stripecancel)
+		$Streamlines.add_child(sstreamline)
+		if $Streamlines.has_node("SStreamLine_placeholder"):
+			$Streamlines/SStreamLine_placeholder.queue_free()
+		#if x["recid"] == predatamarkerrecid:
+		#	$Predatamarker.visible = false
+			
+	elif topic == "paraview/streampredata":
+		var x = JSON.parse_string(message)
+		var pt1 = x["Point1"]
+		var pt2 = x["Point2"]
+		$Predatamarker/pt1.position = Vector3(pt1[0], pt1[2], -pt1[1])
+		$Predatamarker/pt2.position = Vector3(pt2[0], pt2[2], -pt2[1])
+		$Predatamarker.visible = true
+		predatamarkerrecid = x["recid"]
+		
 	else:
 		print("Rec ", topic, " ", message)
 
 var k = 0.0
 func _input(event):
 	if event is InputEventKey and event.is_pressed() and event.keycode == KEY_T:
-		var r = {"Point1":[-3.0,k,-1.6], "Point2":[-3.0,k,-1.4]}
+		#var r = {"Point1":[-3.0,k,-1.6], "Point2":[-3.0,k,-1.4]}
 		#$MQTT.publish("paraview/streamdef", JSON.stringify(r))
 		k += 0.2
 		_on_pickable_object_action_pressed(get_node("../StreamlineWand"))
@@ -69,7 +93,12 @@ func _on_pickable_object_action_pressed(pickable):
 	var pickrad = pickablesize.y*0.5
 	var p1 = pickable.transform.origin - pickable.transform.basis.y*pickrad
 	var p2 = pickable.transform.origin + pickable.transform.basis.y*pickrad
-	var r = {"Point1":[p1.x,-p1.z,p1.y], "Point2":[p2.x,-p2.z,p2.y]}
+	var r = {
+		"Point1":[p1.x,-p1.z,p1.y], 
+		"Point2":[p2.x,-p2.z,p2.y], 
+		"IntegrationDirection":"BOTH", 
+		"recid":randi_range(100, 100000)
+	}
 	$MQTT.publish("paraview/streamdef", JSON.stringify(r))
 	print(pickable)
 
