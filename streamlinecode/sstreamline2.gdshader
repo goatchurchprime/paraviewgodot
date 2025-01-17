@@ -17,11 +17,22 @@ void vertex() {
 	VERTEX.x += integrationtime*streamvelx;
 }
 
+uniform float utimespeed = 0.5;
+uniform float utimefac = 12.0;
+uniform float stripewid = 0.05;
+uniform float stripecancel = 0.2;
 void fragment() {
-	//if (integrationtime < 0.0)
-	//	discard;
 	ALBEDO = COLOR.rgb;
-	float tt = mod(TIME*0.5 + 1.0 - integrationtime*12.0, 1.0);
-	if (tt < 0.1)
-		ALBEDO.y = 1.0;
+	if (integrationtime < 0.0) {
+		ALBEDO.r = 0.9;
+		//discard;
+	}
+	float tt = mod(TIME*utimespeed + 20.0 - integrationtime*utimefac, 1.0);
+	if (abs(tt - 0.5) < stripewid) {
+		ALBEDO.g = 0.3;
+		if (abs(integrationtime) < 0.01)
+			ALBEDO.rg = vec2(1.0, 1.0);
+	} else if (abs(tt - 0.5) > stripecancel) {
+		discard;
+	}
 }

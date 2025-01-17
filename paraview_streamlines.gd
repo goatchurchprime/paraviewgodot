@@ -20,16 +20,20 @@ func _ready():
 		integrationtime.push_back((sin(i*0.3) + i*0.3)/50.0)
 		U.push_back((0.3*cos(i*0.3) + 0.3))
 	#$SStreamLine_placeholder.makepointsstreammesh(points, scalars)
-	$Streamlines/SStreamLine_placeholder.maketubesstreammesh(points, integrationtime, U, 0.0)
+	$Streamlines/SStreamLine_placeholder.maketubesstreammesh(points, integrationtime, U)
 
 var streamvelx = 0.0
-func updatestreamvelx(dstreamvelx):
-	streamvelx += dstreamvelx
-	for s in $Streamlines.get_children():
-		s.setvelocityaddedinx(streamvelx)
+var zerox = 0.0
+var utimespeed = 0.5
+var utimefac = 12.0
+var stripecancel = 1.0
 
-func _process(delta):
-	pass
+func updatestreamvelx(lstreamvelx, lzerox):
+	streamvelx = lstreamvelx
+	zerox = lzerox
+	prints("streamvelx, zerox", streamvelx, zerox)
+	for s in $Streamlines.get_children():
+		s.setvelocityaddedinx(streamvelx, zerox, utimespeed, utimefac, stripecancel)
 
 func _on_mqtt_broker_connected():
 	$MQTT.subscribe("paraview/#")
@@ -45,10 +49,11 @@ func _on_mqtt_received_message(topic, message):
 		for u in x["U"]:
 			var ll = 2.0/sqrt(Vector3(u[0], u[1], u[2]).length())
 			U.push_back(clamp(ll, 0.01, 1.0))
-		sstreamline.maketubesstreammesh(x["points"], x["IntegrationTime"], U, streamvelx)
+		sstreamline.maketubesstreammesh(x["points"], x["IntegrationTime"], U)
+		sstreamline.setvelocityaddedinx(streamvelx, zerox, utimespeed, utimefac, stripecancel)
 		$Streamlines.add_child(sstreamline)
 		if $Streamlines.has_node("SStreamLine_placeholder"):
-			$Streamlines/SStreamLine_placeholder.visible = false
+			$Streamlines/SStreamLine_placeholder.queue_free()
 		#if x["recid"] == predatamarkerrecid:
 		#	$Predatamarker.visible = false
 			

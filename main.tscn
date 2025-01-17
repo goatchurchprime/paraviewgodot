@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://bn2xgm3m3ury6"]
+[gd_scene load_steps=54 format=3 uid="uid://bn2xgm3m3ury6"]
 
 [ext_resource type="PackedScene" uid="uid://b4kad2kuba1yn" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_hand_low.tscn" id="1_2he8d"]
 [ext_resource type="Script" uid="uid://o2fh4j55orln" path="res://main.gd" id="1_82xsv"]
@@ -89,7 +89,7 @@ radius = 0.05
 height = 0.1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_llug4"]
-size = Vector3(20, 1, 20)
+size = Vector3(60, 1, 60)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_15lt8"]
 frequency = 0.0556
@@ -198,6 +198,15 @@ texture_filter = 1
 resource_local_to_scene = true
 size = Vector3(0.3, 0.2, 0.02)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0odxb"]
+transparency = 1
+cull_mode = 2
+albedo_color = Color(0.937255, 0.12549, 1, 0.576471)
+
+[sub_resource type="QuadMesh" id="QuadMesh_lswn8"]
+material = SubResource("StandardMaterial3D_0odxb")
+size = Vector2(10, 10)
+
 [node name="Main" type="Node3D"]
 script = ExtResource("1_82xsv")
 
@@ -248,6 +257,8 @@ strafe = true
 [node name="MovementFlight" parent="XROrigin3D/XRControllerLeft" instance=ExtResource("3_sp5j6")]
 
 [node name="FunctionPickup" parent="XROrigin3D/XRControllerLeft" instance=ExtResource("4_dy63v")]
+grab_collision_mask = 331780
+ranged_collision_mask = 4100
 
 [node name="RT3DNetworkGateway" type="RemoteTransform3D" parent="XROrigin3D/XRControllerLeft"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.1, 0)
@@ -263,6 +274,8 @@ tracker = &"right_hand"
 turn_mode = 1
 
 [node name="FunctionPickup" parent="XROrigin3D/XRControllerRight" instance=ExtResource("4_dy63v")]
+grab_collision_mask = 331780
+ranged_collision_mask = 4100
 
 [node name="StartXR" parent="XROrigin3D" instance=ExtResource("4_eskk3")]
 
@@ -322,6 +335,7 @@ mesh = SubResource("BoxMesh_724ns")
 
 [node name="StreamlineWand" parent="." instance=ExtResource("14_hgqvo")]
 transform = Transform3D(0.999751, 0.0223209, 0, -0.0223209, 0.999751, 0, 0, 0, 1, -1, -1.5, 0.1)
+collision_layer = 4096
 gravity_scale = 0.0
 freeze = true
 freeze_mode = 0
@@ -394,6 +408,11 @@ debug_color = Color(0, 0.6, 0.7, 0.42)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0769, -0.336792, 0.020813)
 
 [node name="PlayerFrame" parent="Players/VRPlayerAvatar" instance=ExtResource("22_ryguw")]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.5, 0, 0)
+visible = false
+mesh = SubResource("QuadMesh_lswn8")
 
 [connection signal="broker_connected" from="ParaviewStreamlines/MQTT" to="ParaviewStreamlines" method="_on_mqtt_broker_connected"]
 [connection signal="received_message" from="ParaviewStreamlines/MQTT" to="ParaviewStreamlines" method="_on_mqtt_received_message"]
