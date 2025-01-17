@@ -6,13 +6,20 @@ uniform vec4 albedo : source_color = vec4(0.0,0.0,1.0,1.0);
 varying float integrationtime;
 uniform float rad = 0.012;
 
+uniform float streamvelx = 0.0;
+uniform float streamtimetimefac = 1.0;
+uniform float streamtimeoffset = 0.0;
+
 void vertex() {
 	COLOR = vec4(clamp(UV.y*4.0-3.0, 0.0, 0.5), 0.0, 1.0, 0.0);
 	VERTEX += NORMAL*UV.y*rad;
-	integrationtime = UV.x;
+	integrationtime = UV.x*streamtimetimefac + streamtimeoffset;
+	VERTEX.x += integrationtime*streamvelx;
 }
 
 void fragment() {
+	//if (integrationtime < 0.0)
+	//	discard;
 	ALBEDO = COLOR.rgb;
 	float tt = mod(TIME*0.5 + 1.0 - integrationtime*12.0, 1.0);
 	if (tt < 0.1)

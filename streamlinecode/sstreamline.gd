@@ -5,14 +5,13 @@ func rotyuppoints(points):
 	for pt in points:
 		res.push_back(Vector3(pt[0], pt[2], -pt[1]))
 	return res
-	
 
 const dvdgap = 2
 func getp3(points, i):
 	return Vector3(points[i][0], points[i][2], -points[i][1])
 
 var integrationtimeMax = 2.0
-func maketubesstreammesh(points, integrationtime, U):
+func maketubesstreammesh(points, integrationtime, U, streamvelx):
 	var ncircp = 5
 	prints("integrationtime", integrationtime[0], integrationtime[-1])
 	var Npts = len(points)
@@ -50,7 +49,13 @@ func maketubesstreammesh(points, integrationtime, U):
 				st.add_index(i0j1)
 	$Stream.mesh = st.commit()
 	#print($Stream.mesh.surface_get_arrays(0)[Mesh.ARRAY_INDEX])
+	setvelocityaddedinx(streamvelx)
 	
+func setvelocityaddedinx(streamvelx):
+	$Stream.get_surface_override_material(0).set_shader_parameter("streamvelx", streamvelx)
+	#integrationtime = UV.x*streamtimetimefac + streamtimeoffset;
+
+
 func makepointsstreammesh(lpoints, scalars):
 	var points = rotyuppoints(lpoints)
 	var Npts = len(points)
