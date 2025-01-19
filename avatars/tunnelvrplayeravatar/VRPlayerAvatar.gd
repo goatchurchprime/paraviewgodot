@@ -82,6 +82,11 @@ func PF_processlocalavatarposition(delta):
 
 func PF_setspeakingvolume(v):
 	$HeadCam/AudioStreamPlayer/MouthSign.scale.z = v
+	if v == 0:
+		arvrorigin.get_node("XRCamera3D/MicActive").modulate = Color(0.0, 0.0, 1.0, 0.3)
+	else:
+		arvrorigin.get_node("XRCamera3D/MicActive").modulate = Color(1.0, 1.0, 0.0, v)
+
 
 func setpaddlebody(active):
 	$ControllerRight/PaddleBody.visible = active

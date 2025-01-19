@@ -11,7 +11,7 @@ uniform float streamtimetimefac = 1.0;
 uniform float streamtimeoffset = 0.0;
 
 void vertex() {
-	COLOR = vec4(clamp(UV.y*4.0-3.0, 0.0, 0.5), 0.0, 1.0, 0.0);
+	COLOR = vec4(clamp(UV.y*6.0-4.0, 0.0, 0.5), 0.0, 1.0, 0.0);
 	VERTEX += NORMAL*UV.y*rad;
 	integrationtime = UV.x*streamtimetimefac + streamtimeoffset;
 	VERTEX.x += integrationtime*streamvelx;

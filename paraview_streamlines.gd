@@ -35,6 +35,7 @@ func updatestreamvelx(lstreamvelx, lzerox):
 	for s in $Streamlines.get_children():
 		s.setvelocityaddedinx(streamvelx, zerox, utimespeed, utimefac, stripecancel)
 
+
 func _on_mqtt_broker_connected():
 	$MQTT.subscribe("paraview/#")
 	get_node("../StreamlineWand/MeshInstance3D").mesh.material.set_shader_parameter("albedo", Color.LAWN_GREEN)
