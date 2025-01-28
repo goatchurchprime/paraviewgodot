@@ -1,22 +1,28 @@
 extends Node3D
 
 func _ready():
-	$XROrigin3D/XRAimRight/RadialMenu.menuitemtexts = [ 
-		"ToggleNetworkView", 
-		"GoOnline", 
-		"Respawn",
-		"ToggleVx",
-		"SetZeroAtXT",
-		"Clearstreams", 
-		"ToggleZoom" ]
 	$XROrigin3D/XRAimRight/RadialMenu.menuitemselected.connect(_menuselected)
 
+@onready var NetworkGateway = $ViewportNetworkGateway/Viewport/NetworkGateway
+
+func getcontextmenutexts():
+	var menuitemtexts = [ ]
+	menuitemtexts.append("ToggleNetworkView")
+	menuitemtexts.append("GoOnline" if NetworkGateway.simple_webrtc_status() == "unconnected" else "Disconnect")
+	menuitemtexts.append("Respawn")
+	menuitemtexts.append("ToggleVx")
+	menuitemtexts.append("SetZeroAtXT")
+	menuitemtexts.append("Clearstreams")
+	menuitemtexts.append("ToggleZoom")
+	return menuitemtexts
 
 func _menuselected(menutext):
 	if menutext == "ToggleNetworkView":
 		$ViewportNetworkGateway.visible = not $ViewportNetworkGateway.visible
 	elif menutext == "GoOnline":
-		$ViewportNetworkGateway/Viewport/NetworkGateway.simple_webrtc_connect("paraviewroom")
+		NetworkGateway.simple_webrtc_connect("paraviewroom")
+	elif menutext == "Disconnect":
+		NetworkGateway.simple_webrtc_connect(null)
 	elif menutext == "Respawn":
 		$XROrigin3D.position = Vector3(0,0,0)
 	else:
