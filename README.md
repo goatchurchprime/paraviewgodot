@@ -1,6 +1,10 @@
 
 This is a Godot4.3 app that interacts with paraview over an mqtt network to request and plot streamlines in VR.
 
+It was presented at Fosdem 2025 in Brussels.  You can see the video here:
+
+https://fosdem.org/2025/schedule/event/fosdem-2025-4948-godot-vr-as-a-front-end-for-paraview-lightning-talk-/
+
 ## Installation
 
 This app depends on a number of external libraries/assets you can pull from the Godot Assetlib.
