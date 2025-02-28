@@ -364,7 +364,7 @@ tracks/45/keys = PackedFloat32Array()
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qatlg"]
 resource_local_to_scene = true
 _data = {
-&"trackstemplate": SubResource("Animation_1xqwv")
+"trackstemplate": SubResource("Animation_1xqwv")
 }
 
 [node name="VRPlayerAvatar" type="Node3D"]
@@ -427,7 +427,7 @@ bones/23/rotation = Quaternion(-0.0180548, -0.0114553, 0.107075, 0.994021)
 
 [node name="PlayerAnimation" type="AnimationPlayer" parent="."]
 libraries = {
-&"playeral": SubResource("AnimationLibrary_qatlg")
+"playeral": SubResource("AnimationLibrary_qatlg")
 }
 
 [editable path="hand_l"]
