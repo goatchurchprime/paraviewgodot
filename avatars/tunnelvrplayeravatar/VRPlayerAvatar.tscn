@@ -393,7 +393,6 @@ mesh = SubResource("BoxMesh_c7mpy")
 surface_material_override/0 = SubResource("StandardMaterial3D_qiaoq")
 
 [node name="hand_l" parent="." instance=ExtResource("7_s2tnc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.194336, -0.155579, 0)
 
 [node name="Skeleton3D" parent="hand_l/Armature" index="0"]
 bones/1/rotation = Quaternion(0.323537, -2.56565e-05, -0.0272204, 0.945824)
@@ -409,7 +408,6 @@ bones/21/rotation = Quaternion(-0.089286, 0.00316807, -0.00673912, 0.995978)
 bones/23/rotation = Quaternion(-0.0180548, 0.0114553, -0.107075, 0.994021)
 
 [node name="hand_r" parent="." instance=ExtResource("9_v8raj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.125977, -0.171204, 0)
 
 [node name="Skeleton3D" parent="hand_r/Armature" index="0"]
 bones/1/rotation = Quaternion(0.323537, 2.56565e-05, 0.0272204, 0.945824)

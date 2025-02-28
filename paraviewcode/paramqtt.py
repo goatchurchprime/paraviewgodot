@@ -89,7 +89,14 @@ def extractstreamlines(recid, a, bnegy):
         jout = { "recid":recid, "lineno":lineno, "points":points }
         for k in ["IntegrationTime", "p"]:
             a.point_data.SetActiveScalars(k)
-            scalars = [ a.point_data.scalars.GetValue(j)  for j in ptids ]
+            scalars = [ ]
+            for j in ptids:
+                if 0 <= j < a.point_data.scalars.GetNumberOfValues():   
+                    scalars.append(a.point_data.scalars.GetValue(j))
+                else:
+                    print("scalars out of range", k, j, a.point_data.scalars.GetNumberOfValues())
+                    scalars.append(1.0)
+            #scalars = [ a.point_data.scalars.GetValue(j)  for j in ptids ]
             jout[k] = scalars
         for k in ["U"]:
             a.point_data.SetActiveVectors(k)

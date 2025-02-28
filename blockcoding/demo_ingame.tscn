@@ -1,0 +1,275 @@
+[gd_scene load_steps=41 format=3 uid="uid://cyfeaej0v85eh"]
+
+[ext_resource type="Script" uid="uid://cw8xxxvpewgod" path="res://blockcoding/demo_ingame.gd" id="1_ov55l"]
+[ext_resource type="PackedScene" uid="uid://c6vumewgnfquy" path="res://addons/block_code/ui/block_canvas/block_canvas.tscn" id="2_5b0n3"]
+[ext_resource type="Texture2D" uid="uid://c2myw28rdchdn" path="res://icon.svg" id="3_fkco4"]
+[ext_resource type="Script" uid="uid://sqhbxce6m0ob" path="res://addons/block_code/block_code_node/block_code.gd" id="4_b2k2k"]
+[ext_resource type="Script" uid="uid://cxqcm2lkoivta" path="res://addons/block_code/serialization/block_serialization_tree.gd" id="5_mxo83"]
+[ext_resource type="Script" uid="uid://c8byh57a7ee0g" path="res://addons/block_code/serialization/block_serialization.gd" id="6_m0osp"]
+[ext_resource type="Script" uid="uid://7my0yj6fmepc" path="res://addons/block_code/serialization/value_block_serialization.gd" id="7_5b0n3"]
+[ext_resource type="Script" uid="uid://d4edad0xeowjv" path="res://addons/block_code/serialization/block_script_serialization.gd" id="7_xqnbk"]
+[ext_resource type="Script" uid="uid://joyw4gikdln0" path="res://addons/block_code/code_generation/variable_definition.gd" id="8_w1eld"]
+[ext_resource type="PackedScene" uid="uid://cph1k5cfximbf" path="res://addons/block_code/drag_manager/drag_manager.tscn" id="9_ys860"]
+
+[sub_resource type="Resource" id="Resource_5b0n3"]
+script = ExtResource("6_m0osp")
+name = &"set_var_rggt"
+children = Array[ExtResource("6_m0osp")]([])
+arguments = {
+"value": true
+}
+
+[sub_resource type="Resource" id="Resource_fkco4"]
+script = ExtResource("6_m0osp")
+name = &"ready"
+children = Array[ExtResource("6_m0osp")]([SubResource("Resource_5b0n3")])
+arguments = {}
+
+[sub_resource type="Resource" id="Resource_b2k2k"]
+script = ExtResource("5_mxo83")
+root = SubResource("Resource_fkco4")
+canvas_position = Vector2(150, 25)
+
+[sub_resource type="Resource" id="Resource_mxo83"]
+script = ExtResource("6_m0osp")
+name = &"Node2D_change_rotation_degrees"
+children = Array[ExtResource("6_m0osp")]([])
+arguments = {
+"value": 1.0
+}
+
+[sub_resource type="Resource" id="Resource_m0osp"]
+script = ExtResource("7_5b0n3")
+name = &"get_var_rggt"
+arguments = {}
+
+[sub_resource type="Resource" id="Resource_xqnbk"]
+script = ExtResource("6_m0osp")
+name = &"Node2D_change_position"
+children = Array[ExtResource("6_m0osp")]([])
+arguments = {
+"value": Vector2(1, 0)
+}
+
+[sub_resource type="Resource" id="Resource_w1eld"]
+script = ExtResource("7_5b0n3")
+name = &"Node2D_get_position"
+arguments = {}
+
+[sub_resource type="Resource" id="Resource_ys860"]
+script = ExtResource("7_5b0n3")
+name = &"vector2_xy"
+arguments = {
+"vector2": SubResource("Resource_w1eld"),
+"xy": "x"
+}
+
+[sub_resource type="Resource" id="Resource_lx0bw"]
+script = ExtResource("7_5b0n3")
+name = &"compare"
+arguments = {
+"float1": SubResource("Resource_ys860"),
+"float2": 400.0,
+"op": ">"
+}
+
+[sub_resource type="Resource" id="Resource_v0fxy"]
+script = ExtResource("7_5b0n3")
+name = &"get_var_rggt"
+arguments = {}
+
+[sub_resource type="Resource" id="Resource_v7l7i"]
+script = ExtResource("7_5b0n3")
+name = &"not"
+arguments = {
+"bool": SubResource("Resource_v0fxy")
+}
+
+[sub_resource type="Resource" id="Resource_7f2ya"]
+script = ExtResource("6_m0osp")
+name = &"set_var_rggt"
+children = Array[ExtResource("6_m0osp")]([])
+arguments = {
+"value": SubResource("Resource_v7l7i")
+}
+
+[sub_resource type="Resource" id="Resource_ale5w"]
+script = ExtResource("6_m0osp")
+name = &"if"
+children = Array[ExtResource("6_m0osp")]([SubResource("Resource_7f2ya")])
+arguments = {
+"condition": SubResource("Resource_lx0bw")
+}
+
+[sub_resource type="Resource" id="Resource_u42pg"]
+script = ExtResource("6_m0osp")
+name = &"if"
+children = Array[ExtResource("6_m0osp")]([SubResource("Resource_xqnbk"), SubResource("Resource_ale5w")])
+arguments = {
+"condition": SubResource("Resource_m0osp")
+}
+
+[sub_resource type="Resource" id="Resource_rk7x4"]
+script = ExtResource("6_m0osp")
+name = &"Node2D_change_position"
+children = Array[ExtResource("6_m0osp")]([])
+arguments = {
+"value": Vector2(-1, 0)
+}
+
+[sub_resource type="Resource" id="Resource_pjhif"]
+script = ExtResource("7_5b0n3")
+name = &"Node2D_get_position"
+arguments = {}
+
+[sub_resource type="Resource" id="Resource_0xmdj"]
+script = ExtResource("7_5b0n3")
+name = &"vector2_xy"
+arguments = {
+"vector2": SubResource("Resource_pjhif"),
+"xy": "x"
+}
+
+[sub_resource type="Resource" id="Resource_oxw22"]
+script = ExtResource("7_5b0n3")
+name = &"compare"
+arguments = {
+"float1": SubResource("Resource_0xmdj"),
+"float2": 100.0,
+"op": "<"
+}
+
+[sub_resource type="Resource" id="Resource_ngp7t"]
+script = ExtResource("7_5b0n3")
+name = &"get_var_rggt"
+arguments = {}
+
+[sub_resource type="Resource" id="Resource_oywxh"]
+script = ExtResource("7_5b0n3")
+name = &"not"
+arguments = {
+"bool": SubResource("Resource_ngp7t")
+}
+
+[sub_resource type="Resource" id="Resource_j6nbp"]
+script = ExtResource("6_m0osp")
+name = &"set_var_rggt"
+children = Array[ExtResource("6_m0osp")]([])
+arguments = {
+"value": SubResource("Resource_oywxh")
+}
+
+[sub_resource type="Resource" id="Resource_u5ads"]
+script = ExtResource("6_m0osp")
+name = &"if"
+children = Array[ExtResource("6_m0osp")]([SubResource("Resource_j6nbp")])
+arguments = {
+"condition": SubResource("Resource_oxw22")
+}
+
+[sub_resource type="Resource" id="Resource_hsfyi"]
+script = ExtResource("6_m0osp")
+name = &"else"
+children = Array[ExtResource("6_m0osp")]([SubResource("Resource_rk7x4"), SubResource("Resource_u5ads")])
+arguments = {}
+
+[sub_resource type="Resource" id="Resource_akbx4"]
+script = ExtResource("6_m0osp")
+name = &"process"
+children = Array[ExtResource("6_m0osp")]([SubResource("Resource_mxo83"), SubResource("Resource_u42pg"), SubResource("Resource_hsfyi")])
+arguments = {}
+
+[sub_resource type="Resource" id="Resource_wjfpk"]
+script = ExtResource("5_mxo83")
+root = SubResource("Resource_akbx4")
+canvas_position = Vector2(500, 50)
+
+[sub_resource type="Resource" id="Resource_wyuyn"]
+script = ExtResource("6_m0osp")
+name = &"Node2D_change_position"
+children = Array[ExtResource("6_m0osp")]([])
+arguments = {
+"value": Vector2(2, 0)
+}
+
+[sub_resource type="Resource" id="Resource_jiol1"]
+script = ExtResource("5_mxo83")
+root = SubResource("Resource_wyuyn")
+canvas_position = Vector2(119.441, 362.802)
+
+[sub_resource type="Resource" id="Resource_c0a4f"]
+script = ExtResource("8_w1eld")
+var_name = "rght"
+var_type = 4
+
+[sub_resource type="Resource" id="Resource_p5sbr"]
+script = ExtResource("8_w1eld")
+var_name = "rggt"
+var_type = 1
+
+[sub_resource type="Resource" id="Resource_16xyd"]
+script = ExtResource("7_xqnbk")
+script_inherits = "Sprite2D"
+block_serialization_trees = Array[ExtResource("5_mxo83")]([SubResource("Resource_b2k2k"), SubResource("Resource_wjfpk"), SubResource("Resource_jiol1")])
+variables = Array[ExtResource("8_w1eld")]([SubResource("Resource_c0a4f"), SubResource("Resource_p5sbr")])
+generated_script = "extends Sprite2D
+
+var rght: String
+
+var rggt: bool
+
+
+func _ready():
+	rggt = true
+
+func _process(delta):
+	rotation_degrees += 1.0
+	if (rggt):
+		position += Vector2(1.0, 0.0)
+		if (((position).x) > 400.0):
+			rggt = (not (rggt))
+	else:
+		position += Vector2(-1.0, 0.0)
+		if (((position).x) < 100.0):
+			rggt = (not (rggt))
+
+"
+version = 0
+
+[node name="DemoInGame" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ov55l")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BlockCanvas" parent="HSplitContainer" instance=ExtResource("2_5b0n3")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BoxContainer" type="BoxContainer" parent="HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Icon" type="Sprite2D" parent="HSplitContainer/BoxContainer"]
+position = Vector2(245, 312)
+texture = ExtResource("3_fkco4")
+
+[node name="BlockCode" type="Node" parent="HSplitContainer/BoxContainer/Icon"]
+unique_name_in_owner = true
+script = ExtResource("4_b2k2k")
+block_script = SubResource("Resource_16xyd")
+
+[node name="DragManager" parent="." instance=ExtResource("9_ys860")]
+unique_name_in_owner = true
+block_canvas_path = NodePath("../HSplitContainer/BlockCanvas")
