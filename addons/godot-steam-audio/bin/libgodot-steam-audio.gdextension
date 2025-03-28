@@ -1,0 +1,61 @@
+[configuration]
+
+entry_symbol = "init_extension"
+compatibility_minimum = 4.3
+
+[libraries]
+
+linux.x86_64.debug ="res://addons/godot-steam-audio/bin/libgodot-steam-audio.linux.template_debug.x86_64.so"
+linux.x86_64.release = "res://addons/godot-steam-audio/bin/libgodot-steam-audio.linux.template_release.x86_64.so"
+android.x86_64.debug ="res://addons/godot-steam-audio/bin/libgodot-steam-audio.android.template_debug.x86_64.so"
+android.x86_64.release = "res://addons/godot-steam-audio/bin/libgodot-steam-audio.android.template_release.x86_64.so"
+
+android.arm64.debug ="res://addons/godot-steam-audio/bin/libgodot-steam-audio.android.template_debug.arm64.so"
+android.arm64.release = "res://addons/godot-steam-audio/bin/libgodot-steam-audio.android.template_release.arm64.so"
+
+windows.x86_64.debug = "res://addons/godot-steam-audio/bin/libgodot-steam-audio.windows.template_debug.x86_64.dll"
+windows.x86_64.release = "res://addons/godot-steam-audio/bin/libgodot-steam-audio.windows.template_release.x86_64.dll"
+macos.debug = "res://addons/godot-steam-audio/bin/libgodot-steam-audio.macos.template_debug.universal.dylib"
+macos.release = "res://addons/godot-steam-audio/bin/libgodot-steam-audio.macos.template_release.universal.dylib"
+
+[icons]
+
+SteamAudioPlayer = "res://addons/godot-steam-audio/icons/steam_audio_player.svg"
+SteamAudioListener = "res://addons/godot-steam-audio/icons/steam_audio_listener.svg"
+SteamAudioConfig = "res://addons/godot-steam-audio/icons/steam_audio_config.svg"
+SteamAudioGeometry = "res://addons/godot-steam-audio/icons/steam_audio_geometry.svg"
+SteamAudioDynamicGeometry = "res://addons/godot-steam-audio/icons/steam_audio_dynamic_geometry.svg"
+
+[dependencies]
+
+windows.x86_64.debug = {
+    "res://addons/godot-steam-audio/bin/phonon.dll": "",
+    "res://addons/godot-steam-audio/bin/phonon.lib": "",
+    "res://addons/godot-steam-audio/bin/TrueAudioNext.dll": "",
+    "res://addons/godot-steam-audio/bin/GPUUtilities.dll": ""
+}
+windows.x86_64.release = {
+    "res://addons/godot-steam-audio/bin/phonon.dll": "",
+    "res://addons/godot-steam-audio/bin/phonon.lib": "",
+    "res://addons/godot-steam-audio/bin/TrueAudioNext.dll": "",
+    "res://addons/godot-steam-audio/bin/GPUUtilities.dll": ""
+}
+linux.x86_64.debug = {
+    "res://addons/godot-steam-audio/bin/libphonon.so": ""
+}
+linux.x86_64.release = {
+    "res://addons/godot-steam-audio/bin/libphonon.so": ""
+}
+android.x86_64.debug = {
+    "res://addons/godot-steam-audio/bin/android/x86_64/libphonon.so": ""
+}
+android.x86_64.release = {
+    "res://addons/godot-steam-audio/bin/android/x86_64/libphonon.so": ""
+}
+
+android.arm64.debug = {
+    "res://addons/godot-steam-audio/bin/android/arm64/libphonon.so": ""
+}
+android.arm64.release = {
+    "res://addons/godot-steam-audio/bin/android/arm64/libphonon.so": ""
+}
